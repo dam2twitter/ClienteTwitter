@@ -20,7 +20,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
      */
     public MainPantallaPrincipalCorredor() {
         initComponents();
-        GestorPrincipal.getInstance().volcarCSVaColeccion();
+        GestorPrincipal.getInstance().volcarCsvCorredoresAColeccion();
        
 
     }
@@ -115,7 +115,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemAltaCorredorActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
-        GestorPrincipal.getInstance().grabarColeccionAcsv();
+        GestorPrincipal.getInstance().grabarColeccionCorredoresAcsv();
         this.dispose();
         System.exit(0);
     }//GEN-LAST:event_jButtonSalirActionPerformed

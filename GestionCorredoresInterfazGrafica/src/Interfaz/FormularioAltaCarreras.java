@@ -226,6 +226,7 @@ private MainPantallaPrincipalCorredor pantallaPrincipal;
         // TODO add your handling code here:
         String nombre= jTextFieldNombre.getText();
         String lugar= jTextFieldLugar.getText();
+        
         setVisible(false);
     }//GEN-LAST:event_AceptarActionPerformed
 

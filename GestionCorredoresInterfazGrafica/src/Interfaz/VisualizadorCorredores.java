@@ -24,7 +24,7 @@ public class VisualizadorCorredores extends javax.swing.JDialog {
     }
 public void rellenarTable() {
 
-        jTable1.setModel(new TableModelCorredor(GestorPrincipal.getInstance().devolverColeccion()));
+        jTable1.setModel(new TableModelCorredor(GestorPrincipal.getInstance().devolverColeccionCorredores()));
 
     }
     /**

@@ -19,6 +19,7 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelo.Carrera;
 import modelo.Corredor;
 
 /**
@@ -29,20 +30,31 @@ public class GestorPrincipal {
 
     private static GestorPrincipal gestor = null;
     private Map<String, Corredor> corredores;
-    
-    private GestorCsv gestorFichero;
+    private Map<Integer, Carrera> carreras;
+    private GestorCsv gestorFicheroCorredores;
+    private GestorCsv gestorFicheroCarreras;
 
     private GestorPrincipal() {
         corredores = new TreeMap();
-        File archivo = new File("corredores.csv");
-        if (!archivo.exists()) {
+        carreras = new TreeMap();
+        File archivoCorredores = new File("corredores.csv");
+        if (!archivoCorredores.exists()) {
             try {
-                archivo.createNewFile();
+                archivoCorredores.createNewFile();
             } catch (IOException ex) {
                 System.out.println("no se puede crear el csv");
             }
         }
-        gestorFichero = new GestorCsv(archivo);
+        gestorFicheroCorredores = new GestorCsv(archivoCorredores);
+        File archivoCarreras = new File("carreras.csv");
+        if (!archivoCarreras.exists()) {
+            try {
+                archivoCarreras.createNewFile();
+            } catch (IOException ex) {
+                System.out.println("no se puede crear el csv");
+            }
+        }
+        gestorFicheroCarreras = new GestorCsv(archivoCarreras);
     }
 
     private synchronized static void createInstance() {
@@ -62,32 +74,57 @@ public class GestorPrincipal {
      * pasa de String en una coleccion a una coleccion Map de corredores con key
      * dni
      */
-    public void volcarCSVaColeccion() {
-        gestorFichero.abrirLector();
-        List<String> datosCorredoresCsv = gestorFichero.guardarLineasCSVEnColeccion();
-        gestorFichero.cerrarLector();
+    public void volcarCsvCarrerasAColeccion() {
+        gestorFicheroCarreras.abrirLector();
+        List<String> datosCarrerasCsv = gestorFicheroCarreras.guardarLineasCSVEnColeccion();
+        gestorFicheroCarreras.cerrarLector();
+        Carrera carrera = null;
+        for (String linea : datosCarrerasCsv) {
+            try {
+                carrera = tokenizarCarreras(linea);
+            } catch (ParseException ex) {
+                Logger.getLogger(GestorPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            carreras.put(carrera.getIdentificador(), carrera);
+        }
+    }
+
+    public void volcarCsvCorredoresAColeccion() {
+        gestorFicheroCorredores.abrirLector();
+        List<String> datosCorredoresCsv = gestorFicheroCorredores.guardarLineasCSVEnColeccion();
+        gestorFicheroCorredores.cerrarLector();
         Corredor runner = null;
         for (String linea : datosCorredoresCsv) {
             try {
-                runner = tokenizar(linea);
+                runner = tokenizarCorredores(linea);
             } catch (ParseException ex) {
                 Logger.getLogger(GestorPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
             corredores.put(runner.getDni(), runner);
         }
     }
-   /**
+
+    /**
      * Metodo que recorre la coleccion pasando cada corredor a una linea y lo
      * graba en un csv
      */
-    public void grabarColeccionAcsv() {
-        gestorFichero.abrirEscritor();
+    public void grabarColeccionCorredoresAcsv() {
+        gestorFicheroCorredores.abrirEscritor();
         for (Corredor corredores : corredores.values()) {
-            gestorFichero.println(destokenitator(corredores));
+            gestorFicheroCorredores.println(destokenizarCorredores(corredores));
         }
-        gestorFichero.cerrarEscritor();
+        gestorFicheroCorredores.cerrarEscritor();
     }
-    public Corredor tokenizar(String linea) throws ParseException {
+
+    public void grabarColeccionCarrerasAcsv() {
+        gestorFicheroCarreras.abrirEscritor();
+        for (Carrera carreras : carreras.values()) {
+            gestorFicheroCarreras.println(destokenizarCarrera(carreras));
+        }
+        gestorFicheroCarreras.cerrarEscritor();
+    }
+
+    public Corredor tokenizarCorredores(String linea) throws ParseException {
         StringTokenizer tokenizador = new StringTokenizer(linea, ";");
         if (tokenizador.countTokens() < 5) {
             throw new IllegalArgumentException("No hay suficientes tokens para crear el corredor");
@@ -100,13 +137,25 @@ public class GestorPrincipal {
         return new Corredor(nombre, apellido, fecha, dni, direccion);
     }
 
+    public Carrera tokenizarCarreras(String linea) throws ParseException {
+        StringTokenizer tokenizador = new StringTokenizer(linea, ";");
+        if (tokenizador.countTokens() < 3) {
+            throw new IllegalArgumentException("No hay suficientes tokens para crear el corredor");
+        }
+        String nombre = tokenizador.nextToken().trim();
+        String lugar = tokenizador.nextToken().trim();
+        int identificador = Integer.parseInt(tokenizador.nextToken().trim());
+
+        return new Carrera(nombre, lugar, identificador);
+    }
+
     /**
      * metodo para pasar un corredor a una linea para grabar en el csv
      *
      * @param c le pasamos un corredor
      * @return nos devuelve la linea
      */
-    public String destokenitator(Corredor c) {
+    public String destokenizarCorredores(Corredor c) {
         String linea = null;
         linea = c.getNombre() + ";" + c.getApellidos() + ";"
                 + (new SimpleDateFormat("dd/mm/yyyy")).format(c.getFechaNacimiento())
@@ -114,14 +163,10 @@ public class GestorPrincipal {
         return linea;
     }
 
-    /**
-     * Recorro la coleccion mostrando todos los corredores por consola
-     * ,deprecated em interfaz grafica
-     */
-    public void visualizarTodos() {
-        for (Corredor runner : corredores.values()) {
-            System.out.println(runner.toString());
-        }
+    public String destokenizarCarrera(Carrera c) {
+        String linea = null;
+        linea = c.getNombre() + ";" + c.getLugar() + ";" + c.getIdentificador();
+        return linea;
     }
 
     /**
@@ -136,6 +181,11 @@ public class GestorPrincipal {
     public void anadirCorredor(String nombre, String apellidos, Date fechaNacimiento, String dni, String direccion) {
         Corredor c = new Corredor(nombre, apellidos, fechaNacimiento, dni, direccion);
         corredores.put(c.getDni(), c);
+    }
+
+    public void anadirCarrera(String nombre, String lugar, int identificador) {
+        Carrera c = new Carrera(nombre, lugar, identificador);
+        carreras.put(c.getIdentificador(), c);
     }
 
     public Corredor buscarUnCorredorDni(String dni) {
@@ -182,7 +232,7 @@ public class GestorPrincipal {
     }
 
     public List DevolverListaOrdenada() {
-        List<Corredor> listaCorredoresOrdenados = devolverColeccion();
+        List<Corredor> listaCorredoresOrdenados = devolverColeccionCorredores();
         Collections.sort(listaCorredoresOrdenados, new Comparator<Corredor>() {
             @Override
             public int compare(Corredor runner, Corredor runner2) {
@@ -192,7 +242,7 @@ public class GestorPrincipal {
         return listaCorredoresOrdenados;
     }
 
-    public List<Corredor> devolverColeccion() {
+    public List<Corredor> devolverColeccionCorredores() {
         return new ArrayList(corredores.values());
     }
 }

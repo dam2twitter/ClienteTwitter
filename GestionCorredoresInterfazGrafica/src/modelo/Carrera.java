@@ -20,6 +20,12 @@ public class Carrera {
     private Date fecha;
     private List<Corredor> corredores;
 
+    public Carrera( String nombre, String lugar,int identificador) {
+        this.identificador = identificador;
+        this.nombre = nombre;
+        this.lugar = lugar;
+    }
+
     public int getIdentificador() {
         return identificador;
     }

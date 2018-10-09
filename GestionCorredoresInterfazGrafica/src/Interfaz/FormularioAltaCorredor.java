@@ -26,7 +26,7 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
         super(parent, modal);
         pantallaPrincipal = (MainPantallaPrincipalCorredor) parent;
         initComponents();
-        GestorPrincipal.getInstance().volcarCSVaColeccion();
+        GestorPrincipal.getInstance().volcarCsvCorredoresAColeccion();
     }
 
     /**

@@ -29,6 +29,7 @@ public class GestorPrincipal {
 
     private static GestorPrincipal gestor = null;
     private Map<String, Corredor> corredores;
+    
     private GestorCsv gestorFichero;
 
     private GestorPrincipal() {

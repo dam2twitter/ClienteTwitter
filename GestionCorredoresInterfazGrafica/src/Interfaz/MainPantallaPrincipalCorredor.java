@@ -6,7 +6,6 @@
 package Interfaz;
 
 
-import logica.TableModelCorredor;
 import logica.GestorPrincipal;
 
 
@@ -22,15 +21,11 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     public MainPantallaPrincipalCorredor() {
         initComponents();
         GestorPrincipal.getInstance().volcarCSVaColeccion();
-        this.rellenarTable();
+       
 
     }
 
-    public void rellenarTable() {
-
-        jTable1.setModel(new TableModelCorredor(GestorPrincipal.getInstance().devolverColeccion()));
-
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,12 +37,11 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     private void initComponents() {
 
         jButtonSalir = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuPrincipal = new javax.swing.JMenu();
         jMenuItemAltaCorredor = new javax.swing.JMenuItem();
         jMenuItemAltaCarrera = new javax.swing.JMenuItem();
+        jMenuItemVisualCorredor = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -58,19 +52,6 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
                 jButtonSalirActionPerformed(evt);
             }
         });
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
 
         jMenuPrincipal.setText("Menu");
 
@@ -90,6 +71,14 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         });
         jMenuPrincipal.add(jMenuItemAltaCarrera);
 
+        jMenuItemVisualCorredor.setText("Ver Corredores");
+        jMenuItemVisualCorredor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemVisualCorredorActionPerformed(evt);
+            }
+        });
+        jMenuPrincipal.add(jMenuItemVisualCorredor);
+
         jMenuBar1.add(jMenuPrincipal);
 
         setJMenuBar(jMenuBar1);
@@ -99,21 +88,14 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(278, Short.MAX_VALUE)
-                        .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addContainerGap(278, Short.MAX_VALUE)
+                .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(357, 357, 357)
                 .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(44, Short.MAX_VALUE))
         );
@@ -129,7 +111,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     private void jMenuItemAltaCorredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAltaCorredorActionPerformed
         FormularioAltaCorredor formulario = new FormularioAltaCorredor(this, true);
         formulario.setVisible(true);
-        this.rellenarTable();
+      
     }//GEN-LAST:event_jMenuItemAltaCorredorActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
@@ -137,6 +119,11 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         this.dispose();
         System.exit(0);
     }//GEN-LAST:event_jButtonSalirActionPerformed
+
+    private void jMenuItemVisualCorredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVisualCorredorActionPerformed
+       VisualizadorCorredores visCorredores = new VisualizadorCorredores(this, true);
+       visCorredores.setVisible(true);
+    }//GEN-LAST:event_jMenuItemVisualCorredorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -180,8 +167,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItemAltaCarrera;
     private javax.swing.JMenuItem jMenuItemAltaCorredor;
+    private javax.swing.JMenuItem jMenuItemVisualCorredor;
     private javax.swing.JMenu jMenuPrincipal;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

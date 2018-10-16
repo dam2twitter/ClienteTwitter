@@ -5,6 +5,7 @@
  */
 package modelo;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -12,25 +13,25 @@ import java.util.List;
  *
  * @author gnord
  */
-public class Carrera {
-    private int identificador;
+public class Carrera implements Serializable{
+    private String identificador;
     private String nombre;
     private String lugar;
     private int numParticipantes;
     private Date fecha;
     private List<Corredor> corredores;
 
-    public Carrera( String nombre, String lugar,int identificador) {
+    public Carrera( String nombre, String lugar,String identificador) {
         this.identificador = identificador;
         this.nombre = nombre;
         this.lugar = lugar;
     }
 
-    public int getIdentificador() {
+    public String getIdentificador() {
         return identificador;
     }
 
-    public void setIdentificador(int identificador) {
+    public void setIdentificador(String identificador) {
         this.identificador = identificador;
     }
 

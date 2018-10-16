@@ -5,9 +5,9 @@
  */
 package Interfaz;
 
-
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import logica.GestorPrincipal;
-
 
 /**
  *
@@ -21,11 +21,14 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     public MainPantallaPrincipalCorredor() {
         initComponents();
         GestorPrincipal.getInstance().volcarCsvCorredoresAColeccion();
-       
+
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                GestorPrincipal.getInstance().grabarColeccionCorredoresAcsv();
+            }
+        });
 
     }
-
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,6 +45,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         jMenuItemAltaCorredor = new javax.swing.JMenuItem();
         jMenuItemAltaCarrera = new javax.swing.JMenuItem();
         jMenuItemVisualCorredor = new javax.swing.JMenuItem();
+        jMenuVerCarreras = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -79,6 +83,9 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         });
         jMenuPrincipal.add(jMenuItemVisualCorredor);
 
+        jMenuVerCarreras.setText("Ver Carreras");
+        jMenuPrincipal.add(jMenuVerCarreras);
+
         jMenuBar1.add(jMenuPrincipal);
 
         setJMenuBar(jMenuBar1);
@@ -111,7 +118,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     private void jMenuItemAltaCorredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAltaCorredorActionPerformed
         FormularioAltaCorredor formulario = new FormularioAltaCorredor(this, true);
         formulario.setVisible(true);
-      
+        //poner rellenar lista
     }//GEN-LAST:event_jMenuItemAltaCorredorActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
@@ -121,8 +128,8 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
     private void jMenuItemVisualCorredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVisualCorredorActionPerformed
-       VisualizadorCorredores visCorredores = new VisualizadorCorredores(this, true);
-       visCorredores.setVisible(true);
+        VisualizadorCorredores visCorredores = new VisualizadorCorredores(this, true);
+        visCorredores.setVisible(true);
     }//GEN-LAST:event_jMenuItemVisualCorredorActionPerformed
 
     /**
@@ -169,5 +176,6 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemAltaCorredor;
     private javax.swing.JMenuItem jMenuItemVisualCorredor;
     private javax.swing.JMenu jMenuPrincipal;
+    private javax.swing.JMenu jMenuVerCarreras;
     // End of variables declaration//GEN-END:variables
 }

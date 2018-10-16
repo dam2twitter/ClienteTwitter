@@ -7,6 +7,7 @@ package Interfaz;
 
 import logica.GestorPrincipal;
 import logica.TableModelCorredor;
+import modelo.Corredor;
 
 /**
  *
@@ -20,13 +21,15 @@ public class VisualizadorCorredores extends javax.swing.JDialog {
     public VisualizadorCorredores(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-         this.rellenarTable();
+        this.rellenarTable();
     }
-public void rellenarTable() {
+
+    public void rellenarTable() {
 
         jTable1.setModel(new TableModelCorredor(GestorPrincipal.getInstance().devolverColeccionCorredores()));
 
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,6 +42,8 @@ public void rellenarTable() {
         jButtonVolverVisualizador = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButtonModificar = new javax.swing.JButton();
+        jButtonEliminarCorredor = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -62,6 +67,20 @@ public void rellenarTable() {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jButtonModificar.setText("Modificar ");
+        jButtonModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonModificarActionPerformed(evt);
+            }
+        });
+
+        jButtonEliminarCorredor.setText("Eliminar");
+        jButtonEliminarCorredor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminarCorredorActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -70,7 +89,12 @@ public void rellenarTable() {
                 .addContainerGap(31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonVolverVisualizador, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonEliminarCorredor, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(jButtonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addComponent(jButtonVolverVisualizador, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(82, 82, 82))
         );
         layout.setVerticalGroup(
@@ -79,7 +103,10 @@ public void rellenarTable() {
                 .addGap(17, 17, 17)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addComponent(jButtonVolverVisualizador, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonVolverVisualizador, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonEliminarCorredor, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(66, 66, 66))
         );
 
@@ -91,49 +118,32 @@ public void rellenarTable() {
         setVisible(false);
     }//GEN-LAST:event_jButtonVolverVisualizadorActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VisualizadorCorredores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VisualizadorCorredores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VisualizadorCorredores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VisualizadorCorredores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void jButtonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarActionPerformed
+        int seleccionado = jTable1.getSelectedRow();
+        if (seleccionado >= 0) {
+            Corredor corredorSeleccionado = GestorPrincipal.getInstance().devolverColeccionCorredores().get(seleccionado);
+            FormularioAltaCorredor formularioModificar;
+            formularioModificar = new FormularioAltaCorredor(this, true, corredorSeleccionado);
+            formularioModificar.setVisible(true);
+            this.rellenarTable();
         }
-        //</editor-fold>
+        //meter un jopcionpanel con aviso de seleccionar
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                VisualizadorCorredores dialog = new VisualizadorCorredores(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    }//GEN-LAST:event_jButtonModificarActionPerformed
+
+    private void jButtonEliminarCorredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarCorredorActionPerformed
+  int seleccionado = jTable1.getSelectedRow();
+        if (seleccionado >= 0) {
+            Corredor corredorSeleccionado = GestorPrincipal.getInstance().devolverColeccionCorredores().get(seleccionado);
+            GestorPrincipal.getInstance().eleminarUnCorredor(corredorSeleccionado.getDni());
+            this.rellenarTable();
+        }
+    }//GEN-LAST:event_jButtonEliminarCorredorActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonEliminarCorredor;
+    private javax.swing.JButton jButtonModificar;
     private javax.swing.JButton jButtonVolverVisualizador;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

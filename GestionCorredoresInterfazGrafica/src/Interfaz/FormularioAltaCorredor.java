@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import logica.GestorPrincipal;
+import modelo.Corredor;
 
 /**
  *
@@ -16,17 +17,27 @@ import logica.GestorPrincipal;
  */
 public class FormularioAltaCorredor extends javax.swing.JDialog {
 
-    private MainPantallaPrincipalCorredor pantallaPrincipal;
     private SimpleDateFormat fechaFormateada = new SimpleDateFormat("dd/MM/yyyy");
+    private Corredor corredorSeleccionado = null;
 
     /**
      * Creates new form FormularioAlta
      */
     public FormularioAltaCorredor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        pantallaPrincipal = (MainPantallaPrincipalCorredor) parent;
         initComponents();
         GestorPrincipal.getInstance().volcarCsvCorredoresAColeccion();
+    }
+
+    public FormularioAltaCorredor(VisualizadorCorredores parent, boolean modal, Corredor corredorSeleccionado) {
+        super(parent, modal);
+        initComponents();
+        jTextFieldNombre.setText(corredorSeleccionado.getNombre());
+        jTextFieldApellidos.setText(corredorSeleccionado.getApellidos());
+        jTextFieldDireccion.setText(corredorSeleccionado.getDireccion());
+        jTextFieldDni.setText(corredorSeleccionado.getDni());
+        jSpinnerFecha.setValue(corredorSeleccionado.getFechaNacimiento());
+
     }
 
     /**
@@ -68,22 +79,12 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
         jLabelNombre.setText("Nombre:");
 
         jTextFieldNombre.setBackground(new java.awt.Color(204, 204, 204));
-        jTextFieldNombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldNombreActionPerformed(evt);
-            }
-        });
 
         jTextFieldApellidos.setBackground(new java.awt.Color(204, 204, 204));
 
         jTextFieldDireccion.setBackground(new java.awt.Color(204, 204, 204));
 
         jTextFieldDni.setBackground(new java.awt.Color(204, 204, 204));
-        jTextFieldDni.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldDniActionPerformed(evt);
-            }
-        });
 
         jLabelFecha.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabelFecha.setText("Fecha");
@@ -203,14 +204,6 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldNombreActionPerformed
-
-    private void jTextFieldDniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldDniActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldDniActionPerformed
-
     private void VolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverActionPerformed
         setVisible(false);        // TODO add your handling code here:
     }//GEN-LAST:event_VolverActionPerformed
@@ -222,12 +215,20 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
         String dni = jTextFieldDni.getText();
         String direccion = jTextFieldDireccion.getText();
         Date fecha = (Date) jSpinnerFecha.getValue();
-        GestorPrincipal.getInstance().anadirCorredor(nombre, apellido, fecha, dni, direccion);
+        if (corredorSeleccionado == null) {
+            GestorPrincipal.getInstance().anadirCorredor(nombre, apellido, fecha, dni, direccion);
+        }else{
+            corredorSeleccionado.setNombre(nombre);
+        corredorSeleccionado.setApellidos(apellido);
+        corredorSeleccionado.setDireccion(direccion);
+        corredorSeleccionado.setDni(dni);
+        corredorSeleccionado.setFechaNacimiento(fecha);
+        }
         setVisible(false);
-        JOptionPane.showMessageDialog(this, "Se ha creado un corredor","Alta",JOptionPane.INFORMATION_MESSAGE);
-        
+        JOptionPane.showMessageDialog(this, "Se ha creado un corredor", "Alta", JOptionPane.INFORMATION_MESSAGE);
+
     }//GEN-LAST:event_Aceptar1ActionPerformed
-   
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Aceptar1;

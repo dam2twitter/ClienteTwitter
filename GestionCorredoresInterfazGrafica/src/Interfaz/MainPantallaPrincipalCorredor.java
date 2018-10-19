@@ -5,9 +5,15 @@
  */
 package Interfaz;
 
+import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import logica.GestorPrincipal;
+import org.openide.util.Exceptions;
 
 /**
  *
@@ -15,13 +21,28 @@ import logica.GestorPrincipal;
  */
 public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
 
+    private File f = new File("/imagenes/corredor.png");
+    private static final String RUTA_LOGO = "/imagenes/corredor.png";
+
     /**
      * Creates new form MainCorredor
      */
     public MainPantallaPrincipalCorredor() {
         initComponents();
+        setLocationRelativeTo(null);
+        setTitle("Gestor corredores");
+        setIconImage(new ImageIcon(getClass().getResource(RUTA_LOGO)).getImage());
         GestorPrincipal.getInstance().volcarCsvCorredoresAColeccion();
 
+        try {
+            Image image = ImageIO.read(getClass().getResource(RUTA_LOGO));
+            image = image.getScaledInstance(100,100, Image.SCALE_SMOOTH);
+            jLabelIcono.setIcon(new ImageIcon(image));
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+
+        //metodo para guardar la coleccion si se cierra en la cruz el programa
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 GestorPrincipal.getInstance().grabarColeccionCorredoresAcsv();
@@ -40,6 +61,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     private void initComponents() {
 
         jButtonSalir = new javax.swing.JButton();
+        jLabelIcono = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuPrincipal = new javax.swing.JMenu();
         jMenuItemAltaCorredor = new javax.swing.JMenuItem();
@@ -94,15 +116,22 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(278, Short.MAX_VALUE)
-                .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(75, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabelIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(71, 71, 71))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(357, 357, 357)
+                .addGap(42, 42, 42)
+                .addComponent(jLabelIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(44, Short.MAX_VALUE))
         );
@@ -171,6 +200,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonSalir;
+    private javax.swing.JLabel jLabelIcono;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItemAltaCarrera;
     private javax.swing.JMenuItem jMenuItemAltaCorredor;

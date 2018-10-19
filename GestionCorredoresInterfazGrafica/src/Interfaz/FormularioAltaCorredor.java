@@ -5,11 +5,14 @@
  */
 package Interfaz;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import logica.GestorPrincipal;
 import modelo.Corredor;
+import org.netbeans.validation.api.builtin.stringvalidation.StringValidators;
+import org.netbeans.validation.api.ui.ValidationGroup;
 
 /**
  *
@@ -17,7 +20,6 @@ import modelo.Corredor;
  */
 public class FormularioAltaCorredor extends javax.swing.JDialog {
 
-    private SimpleDateFormat fechaFormateada = new SimpleDateFormat("dd/MM/yyyy");
     private Corredor corredorSeleccionado = null;
 
     /**
@@ -26,7 +28,9 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
     public FormularioAltaCorredor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        Aceptar1.setEnabled(false);
         GestorPrincipal.getInstance().volcarCsvCorredoresAColeccion();
+        validador();
     }
 
     public FormularioAltaCorredor(VisualizadorCorredores parent, boolean modal, Corredor corredorSeleccionado) {
@@ -37,6 +41,7 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
         jTextFieldDireccion.setText(corredorSeleccionado.getDireccion());
         jTextFieldDni.setText(corredorSeleccionado.getDni());
         jSpinnerFecha.setValue(corredorSeleccionado.getFechaNacimiento());
+        validador();
 
     }
 
@@ -63,6 +68,7 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
         Volver = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         Aceptar1 = new javax.swing.JButton();
+        validationPanel = new org.netbeans.validation.api.ui.swing.ValidationPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -138,7 +144,10 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jTextFieldApellidos)
                                     .addComponent(jTextFieldDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
-                                    .addComponent(jTextFieldDni))))
+                                    .addComponent(jTextFieldDni)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(validationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(103, 103, 103))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(254, 254, 254)
@@ -172,7 +181,9 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSpinnerFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(validationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Volver, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Aceptar1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -207,7 +218,24 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
     private void VolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverActionPerformed
         setVisible(false);        // TODO add your handling code here:
     }//GEN-LAST:event_VolverActionPerformed
+    private void validador() {
+        ValidationGroup group = validationPanel.getValidationGroup();
+        group.add(jTextFieldNombre, StringValidators.REQUIRE_NON_EMPTY_STRING);
+        group.add(jTextFieldApellidos, StringValidators.REQUIRE_NON_EMPTY_STRING);
+        group.add(jTextFieldDireccion, StringValidators.REQUIRE_NON_EMPTY_STRING);
+        group.add(jTextFieldDni, StringValidators.REQUIRE_NON_EMPTY_STRING);
+        validationPanel.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (validationPanel.getProblem() == null) {
+                    Aceptar1.setEnabled(true);
+                } else {
+                    Aceptar1.setEnabled(false);
+                }
+            }
+        });
 
+    }
     private void Aceptar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aceptar1ActionPerformed
         // TODO add your handling code here:  
         String nombre = jTextFieldNombre.getText();
@@ -217,12 +245,12 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
         Date fecha = (Date) jSpinnerFecha.getValue();
         if (corredorSeleccionado == null) {
             GestorPrincipal.getInstance().anadirCorredor(nombre, apellido, fecha, dni, direccion);
-        }else{
+        } else {
             corredorSeleccionado.setNombre(nombre);
-        corredorSeleccionado.setApellidos(apellido);
-        corredorSeleccionado.setDireccion(direccion);
-        corredorSeleccionado.setDni(dni);
-        corredorSeleccionado.setFechaNacimiento(fecha);
+            corredorSeleccionado.setApellidos(apellido);
+            corredorSeleccionado.setDireccion(direccion);
+            corredorSeleccionado.setDni(dni);
+            corredorSeleccionado.setFechaNacimiento(fecha);
         }
         setVisible(false);
         JOptionPane.showMessageDialog(this, "Se ha creado un corredor", "Alta", JOptionPane.INFORMATION_MESSAGE);
@@ -245,5 +273,6 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
     private javax.swing.JTextField jTextFieldDireccion;
     private javax.swing.JTextField jTextFieldDni;
     private javax.swing.JTextField jTextFieldNombre;
+    private org.netbeans.validation.api.ui.swing.ValidationPanel validationPanel;
     // End of variables declaration//GEN-END:variables
 }

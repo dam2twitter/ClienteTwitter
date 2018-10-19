@@ -79,6 +79,10 @@
                                       <Component id="jTextFieldDni" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Component id="validationPanel" min="-2" pref="418" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace min="-2" pref="103" max="-2" attributes="0"/>
                       </Group>
@@ -124,7 +128,9 @@
                       <Component id="jLabelFecha" alignment="3" min="-2" pref="39" max="-2" attributes="0"/>
                       <Component id="jSpinnerFecha" alignment="3" min="-2" pref="39" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="66" max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="validationPanel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="23" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="Volver" alignment="3" min="-2" pref="43" max="-2" attributes="0"/>
                       <Component id="Aceptar1" alignment="3" min="-2" pref="43" max="-2" attributes="0"/>
@@ -240,6 +246,8 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Aceptar1ActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="org.netbeans.validation.api.ui.swing.ValidationPanel" name="validationPanel">
         </Component>
       </SubComponents>
     </Container>

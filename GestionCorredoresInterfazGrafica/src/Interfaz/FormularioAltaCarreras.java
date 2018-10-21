@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  *
- * @author gnord
+ * @author daniel regueiro
  */
 public class FormularioAltaCarreras extends javax.swing.JDialog {
 

@@ -5,13 +5,14 @@
  */
 package modelo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
- * @author gnord
+ * @author daniel regueiro
  */
-public class CorredorCarrera {
+public class CorredorCarrera implements Serializable{
     private Corredor corredor;
     private int dorsal;
     private Date tiempo;

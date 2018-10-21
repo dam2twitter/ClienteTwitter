@@ -5,21 +5,10 @@
  */
 package logica;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Carrera;
@@ -36,10 +25,12 @@ public class GestorPrincipal {
     private Map<String, Carrera> carreras;
     private GestorCsv gestorFicheroCorredores;
 
+
     private GestorPrincipal() {
         corredores = new TreeMap();
         carreras = new TreeMap();
         File archivoCorredores = new File("corredores.csv");
+      
         if (!archivoCorredores.exists()) {
             try {
                 archivoCorredores.createNewFile();
@@ -78,48 +69,6 @@ public class GestorPrincipal {
         }
     }
 
-    /**
-     * graba una carrera en un dat ya existente
-     *
-     * @param carrera
-     * @param archivo
-     */
-    public void grabar(Carrera carrera, File archivo) {
-
-        FileOutputStream fos;
-        try {
-            fos = new FileOutputStream(archivo, true);
-            AddObject escritor = new AddObject(fos);
-            escritor.writeObject(carrera);
-
-        } catch (FileNotFoundException ex) {
-            System.out.println("no se encuentra el archivo");
-        } catch (IOException ex) {
-            System.out.println("no se pudo grabar el archivo");
-        }
-
-    }
-
-    /**
-     * crea el archivo y graba la primera carrera
-     *
-     * @param carrera
-     */
-    public void crearArchivoYGrabarObjetos(File file, Carrera carrera) {
-        FileOutputStream fos = null;
-
-        try {
-            fos = new FileOutputStream(file);
-            ObjectOutputStream escritor = new ObjectOutputStream(fos);
-
-            escritor.writeObject(carrera);
-        } catch (FileNotFoundException ex) {
-            System.out.println("No se encuentra el archivo, fallo en la clase crearArchivosYGrabarObjetos");
-        } catch (IOException ex) {
-            System.out.println("No se puede escribir el archivo, fallo en la clase crearArchivosYGrabarObjetos");
-        }
-
-    }
 
     /**
      * Metodo que recorre la coleccion pasando cada corredor a una linea y lo

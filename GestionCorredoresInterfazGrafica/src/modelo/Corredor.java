@@ -5,14 +5,15 @@
  */
 package modelo;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
 /**
  *
- * @author gnord
+ * @author daniel regueiro
  */
-public class Corredor implements Comparable<Corredor> {
+public class Corredor implements Comparable<Corredor>, Serializable {
 
     private String nombre;
     private String apellidos;

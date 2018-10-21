@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  *
- * @author gnord
+ * @author daniel regueiro
  */
 public class Carrera implements Serializable{
     private String identificador;
@@ -19,7 +19,7 @@ public class Carrera implements Serializable{
     private String lugar;
     private int numParticipantes;
     private Date fecha;
-    private List<Corredor> corredores;
+    private List<CorredorCarrera> corredores;
 
     public Carrera( String nombre, String lugar,String identificador) {
         this.identificador = identificador;
@@ -67,11 +67,11 @@ public class Carrera implements Serializable{
         this.fecha = fecha;
     }
 
-    public List<Corredor> getCorredores() {
+    public List<CorredorCarrera> getCorredores() {
         return corredores;
     }
 
-    public void setCorredores(List<Corredor> corredores) {
+    public void setCorredores(List<CorredorCarrera> corredores) {
         this.corredores = corredores;
     }
 

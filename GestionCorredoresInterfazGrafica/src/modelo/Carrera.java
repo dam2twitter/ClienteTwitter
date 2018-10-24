@@ -21,10 +21,11 @@ public class Carrera implements Serializable{
     private Date fecha;
     private List<CorredorCarrera> corredores;
 
-    public Carrera( String nombre, String lugar,String identificador) {
+    public Carrera( String nombre, String lugar,String identificador,Date Fecha) {
         this.identificador = identificador;
         this.nombre = nombre;
         this.lugar = lugar;
+        this.fecha=fecha;
     }
 
     public String getIdentificador() {

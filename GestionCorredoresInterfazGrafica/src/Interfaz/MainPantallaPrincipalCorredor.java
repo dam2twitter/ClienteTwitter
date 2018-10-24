@@ -17,7 +17,7 @@ import org.openide.util.Exceptions;
 
 /**
  *
- * @author gnord
+ * @author daniel regueiro
  */
 public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
 
@@ -36,7 +36,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
 
         try {
             Image image = ImageIO.read(getClass().getResource(RUTA_LOGO));
-            image = image.getScaledInstance(100,100, Image.SCALE_SMOOTH);
+            image = image.getScaledInstance(200,200, Image.SCALE_SMOOTH);
             jLabelIcono.setIcon(new ImageIcon(image));
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
@@ -46,6 +46,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 GestorPrincipal.getInstance().grabarColeccionCorredoresAcsv();
+                GestorPrincipal.getInstance().grabarArchivoCarreras();
             }
         });
 
@@ -67,7 +68,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         jMenuItemAltaCorredor = new javax.swing.JMenuItem();
         jMenuItemAltaCarrera = new javax.swing.JMenuItem();
         jMenuItemVisualCorredor = new javax.swing.JMenuItem();
-        jMenuVerCarreras = new javax.swing.JMenu();
+        jMenuVerCarrera = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -105,8 +106,13 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         });
         jMenuPrincipal.add(jMenuItemVisualCorredor);
 
-        jMenuVerCarreras.setText("Ver Carreras");
-        jMenuPrincipal.add(jMenuVerCarreras);
+        jMenuVerCarrera.setText("Ver Carrera");
+        jMenuVerCarrera.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuVerCarreraActionPerformed(evt);
+            }
+        });
+        jMenuPrincipal.add(jMenuVerCarrera);
 
         jMenuBar1.add(jMenuPrincipal);
 
@@ -117,14 +123,13 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(75, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(49, 49, 49))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabelIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(71, 71, 71))))
+                .addContainerGap(278, Short.MAX_VALUE)
+                .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(jLabelIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,6 +157,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
         GestorPrincipal.getInstance().grabarColeccionCorredoresAcsv();
+        GestorPrincipal.getInstance().grabarArchivoCarreras();
         this.dispose();
         System.exit(0);
     }//GEN-LAST:event_jButtonSalirActionPerformed
@@ -160,6 +166,11 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         VisualizadorCorredores visCorredores = new VisualizadorCorredores(this, true);
         visCorredores.setVisible(true);
     }//GEN-LAST:event_jMenuItemVisualCorredorActionPerformed
+
+    private void jMenuVerCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuVerCarreraActionPerformed
+        VisualizadorCarreras visCarreras=new VisualizadorCarreras(this, true);
+        visCarreras.setVisible(true);
+    }//GEN-LAST:event_jMenuVerCarreraActionPerformed
 
     /**
      * @param args the command line arguments
@@ -206,6 +217,6 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemAltaCorredor;
     private javax.swing.JMenuItem jMenuItemVisualCorredor;
     private javax.swing.JMenu jMenuPrincipal;
-    private javax.swing.JMenu jMenuVerCarreras;
+    private javax.swing.JMenuItem jMenuVerCarrera;
     // End of variables declaration//GEN-END:variables
 }

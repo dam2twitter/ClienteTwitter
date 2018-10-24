@@ -11,7 +11,7 @@ import java.io.OutputStream;
 
 /**
  *
- * @author gnord
+ * @author daniel regueiro
  */
 public class AddObject extends ObjectOutputStream {
     

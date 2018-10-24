@@ -16,7 +16,7 @@ import org.netbeans.validation.api.ui.ValidationGroup;
 
 /**
  *
- * @author gnord
+ * @author daniel regueiro
  */
 public class FormularioAltaCorredor extends javax.swing.JDialog {
 

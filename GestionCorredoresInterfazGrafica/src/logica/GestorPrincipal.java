@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Carrera;
 import modelo.Corredor;
+import org.openide.util.Exceptions;
 
 /**
  *
@@ -24,13 +25,32 @@ public class GestorPrincipal {
     private Map<String, Corredor> corredores;
     private Map<String, Carrera> carreras;
     private GestorCsv gestorFicheroCorredores;
-
+    private File fileCarreras;
+    private FileInputStream lector;
+    private ObjectInputStream obInputS;
 
     private GestorPrincipal() {
         corredores = new TreeMap();
-        carreras = new TreeMap();
+
         File archivoCorredores = new File("corredores.csv");
-      
+        fileCarreras = new File("carreras.dat");
+        if (!fileCarreras.exists()) {
+            carreras = new TreeMap();
+        } else {
+            try {
+                lector = new FileInputStream(fileCarreras);
+                obInputS = new ObjectInputStream(lector);
+                carreras = (Map) obInputS.readObject();
+
+            } catch (FileNotFoundException ex) {
+                Exceptions.printStackTrace(ex);
+            } catch (IOException ex) {
+                Exceptions.printStackTrace(ex);
+            } catch (ClassNotFoundException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+        }
+
         if (!archivoCorredores.exists()) {
             try {
                 archivoCorredores.createNewFile();
@@ -39,6 +59,7 @@ public class GestorPrincipal {
             }
         }
         gestorFicheroCorredores = new GestorCsv(archivoCorredores);
+
     }
 
     private synchronized static void createInstance() {
@@ -68,7 +89,6 @@ public class GestorPrincipal {
             corredores.put(runner.getDni(), runner);
         }
     }
-
 
     /**
      * Metodo que recorre la coleccion pasando cada corredor a una linea y lo
@@ -123,9 +143,19 @@ public class GestorPrincipal {
         corredores.put(c.getDni(), c);
     }
 
-    public void anadirCarrera(String nombre, String lugar, String identificador) {
-        Carrera c = new Carrera(nombre, lugar, identificador);
+    public void anadirCarrera(String nombre, String lugar, String identificador, Date fecha) {
+        Carrera c = new Carrera(nombre, lugar, identificador, fecha);
         carreras.put(c.getIdentificador(), c);
+    }
+
+    public List<Carrera> devolverColeccionCarreras() {
+        return new ArrayList(carreras.values());
+    }
+
+    public void grabarArchivoCarreras() {
+        CrearArchivoDatygrabarObjetos grabar = new CrearArchivoDatygrabarObjetos();
+        grabar.crearArchivoYGrabarObjetos(fileCarreras, carreras);
+
     }
 
     public Corredor buscarUnCorredorDni(String dni) {

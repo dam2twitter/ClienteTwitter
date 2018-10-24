@@ -11,7 +11,7 @@ import modelo.Corredor;
 
 /**
  *
- * @author gnord
+ * @author daniel regueiro
  */
 public class TableModelCorredor extends AbstractTableModel {
 

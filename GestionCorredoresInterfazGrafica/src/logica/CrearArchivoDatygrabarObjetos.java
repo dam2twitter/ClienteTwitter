@@ -12,7 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Map;
-import modelo.Carrera;
+
 
 
 /**
@@ -34,7 +34,6 @@ public class CrearArchivoDatygrabarObjetos {
         try {
             fos = new FileOutputStream(file);
             ObjectOutputStream escritor = new ObjectOutputStream(fos);
-
             escritor.writeObject(carrera);
         } catch (FileNotFoundException ex) {
            System.out.println("No se encuentra el archivo, fallo en la clase crearArchivosYGrabarObjetos");

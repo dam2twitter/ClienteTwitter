@@ -40,8 +40,6 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jButtonElimCarrera" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jButtonAceptar" min="-2" pref="109" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jButtonVolver" min="-2" pref="109" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -65,7 +63,6 @@
                   <Component id="jButtonVolver" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                   <Component id="jButtonEliminarCorredor" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                   <Component id="jButtonElimCarrera" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
-                  <Component id="jButtonAceptar" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
           </Group>
@@ -88,7 +85,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="jTable1">
+        <Component class="javax.swing.JTable" name="jTableCorredoresCarrera">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="4" rowCount="4">
@@ -109,7 +106,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="jTable2">
+        <Component class="javax.swing.JTable" name="jTableCarreras">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="4" rowCount="4">
@@ -135,15 +132,13 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Volver"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonVolverActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonEliminarCorredor">
       <Properties>
         <Property name="text" type="java.lang.String" value="Eliminar Corredor"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButtonAceptar">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Aceptar"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonElimCarrera">

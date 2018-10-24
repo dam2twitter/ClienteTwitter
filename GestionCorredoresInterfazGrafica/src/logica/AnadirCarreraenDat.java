@@ -10,7 +10,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import modelo.Carrera;
+import java.util.List;
+
 
 
 /**
@@ -19,7 +20,7 @@ import modelo.Carrera;
  */
 public class AnadirCarreraenDat {
     
-     public  void grabar(Carrera carrera,File archivo) {
+     public  void grabar(List carrera,File archivo) {
 
         FileOutputStream fos;
         try {

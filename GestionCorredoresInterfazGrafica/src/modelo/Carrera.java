@@ -6,6 +6,7 @@
 package modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class Carrera implements Serializable{
         this.nombre = nombre;
         this.lugar = lugar;
         this.fecha=fecha;
+        this.corredores=new ArrayList<CorredorCarrera>();
+        this.numParticipantes=100;
     }
 
     public String getIdentificador() {

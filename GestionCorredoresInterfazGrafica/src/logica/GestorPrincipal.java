@@ -166,6 +166,10 @@ public class GestorPrincipal {
         return corredores.remove(dni);
     }
 
+    public Carrera eleminarCarrera(String id) {
+        return carreras.remove(id);
+    }
+
     public List DevolverListaOrdenada() {
         List<Corredor> listaCorredoresOrdenados = devolverColeccionCorredores();
         Collections.sort(listaCorredoresOrdenados, new Comparator<Corredor>() {

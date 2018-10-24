@@ -24,26 +24,29 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabelTituloCarreras" min="-2" pref="110" max="-2" attributes="0"/>
-                          <Component id="jScrollPane2" min="-2" pref="632" max="-2" attributes="0"/>
-                          <Component id="jScrollPane1" min="-2" pref="632" max="-2" attributes="0"/>
-                          <Component id="jLabelParticipantes" alignment="0" min="-2" pref="143" max="-2" attributes="0"/>
-                      </Group>
+              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jScrollPane3" alignment="0" min="-2" pref="632" max="-2" attributes="0"/>
+                      <Component id="jLabelParticipantes1" alignment="0" min="-2" pref="269" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
-                      <Component id="jButtonEliminarCorredor" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButtonElimCarrera" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jButtonVolver" min="-2" pref="109" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="632" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="jLabelParticipantes" min="-2" pref="143" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="489" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                      <Component id="jLabelTituloCarreras" min="-2" pref="110" max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" pref="632" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="jButtonAnadirCorredor" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonEliminarCarrera" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jButtonVolver" alignment="1" max="32767" attributes="0"/>
+                      <Component id="jButtonEliminarCorredor" alignment="1" max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="35" max="32767" attributes="0"/>
+              <EmptySpace pref="75" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -54,17 +57,23 @@
               <Component id="jLabelTituloCarreras" min="-2" pref="32" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane2" min="-2" pref="105" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-              <Component id="jLabelParticipantes" min="-2" pref="32" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jButtonEliminarCarrera" min="-2" pref="48" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabelParticipantes1" min="-2" pref="32" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane3" min="-2" pref="105" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jButtonAnadirCorredor" min="-2" pref="48" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabelParticipantes" min="-2" pref="32" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="105" max="-2" attributes="0"/>
-              <EmptySpace pref="114" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jButtonVolver" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
-                  <Component id="jButtonEliminarCorredor" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
-                  <Component id="jButtonElimCarrera" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jButtonEliminarCorredor" min="-2" pref="48" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jButtonVolver" min="-2" pref="48" max="-2" attributes="0"/>
+              <EmptySpace pref="30" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -141,10 +150,50 @@
         <Property name="text" type="java.lang.String" value="Eliminar Corredor"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButtonElimCarrera">
+    <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="jTableCorredoresDisponibles">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="4" rowCount="4">
+                <Column editable="true" title="Title 1" type="java.lang.Object"/>
+                <Column editable="true" title="Title 2" type="java.lang.Object"/>
+                <Column editable="true" title="Title 3" type="java.lang.Object"/>
+                <Column editable="true" title="Title 4" type="java.lang.Object"/>
+              </Table>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="jLabelParticipantes1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Eliminar Carrera"/>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Dialog" size="18" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Corredores disponibles:"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonAnadirCorredor">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="A&#xf1;adir Corredor"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAnadirCorredorActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonEliminarCarrera">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Eleminar Carrera"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonEliminarCarreraActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

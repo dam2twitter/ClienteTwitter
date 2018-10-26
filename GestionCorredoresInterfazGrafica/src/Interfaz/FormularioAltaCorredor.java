@@ -238,23 +238,29 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
     }
     private void Aceptar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aceptar1ActionPerformed
         // TODO add your handling code here:  
+        boolean anadido = false;
         String nombre = jTextFieldNombre.getText();
         String apellido = jTextFieldApellidos.getText();
         String dni = jTextFieldDni.getText();
         String direccion = jTextFieldDireccion.getText();
         Date fecha = (Date) jSpinnerFecha.getValue();
         if (corredorSeleccionado == null) {
-            GestorPrincipal.getInstance().anadirCorredor(nombre, apellido, fecha, dni, direccion);
+            if (GestorPrincipal.getInstance().buscarUnCorredorDni(jTextFieldDni.getText()) == null) {
+                GestorPrincipal.getInstance().anadirCorredor(nombre, apellido, fecha, dni, direccion);
+                JOptionPane.showMessageDialog(this, "Se ha creado un corredor", "Alta", JOptionPane.INFORMATION_MESSAGE);
+                  setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(this, "El Dni ya existe en la base de datos, modifique la entrada", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         } else {
             corredorSeleccionado.setNombre(nombre);
             corredorSeleccionado.setApellidos(apellido);
             corredorSeleccionado.setDireccion(direccion);
             corredorSeleccionado.setDni(dni);
             corredorSeleccionado.setFechaNacimiento(fecha);
+            JOptionPane.showMessageDialog(this, "Se ha creado un corredor", "Alta", JOptionPane.INFORMATION_MESSAGE);
+              setVisible(false);
         }
-        setVisible(false);
-        JOptionPane.showMessageDialog(this, "Se ha creado un corredor", "Alta", JOptionPane.INFORMATION_MESSAGE);
-
     }//GEN-LAST:event_Aceptar1ActionPerformed
 
 

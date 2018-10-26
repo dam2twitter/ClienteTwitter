@@ -225,20 +225,18 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
             corredor = GestorPrincipal.getInstance().devolverColeccionCorredores().get(seleccionado);
         }
         int dorsal = 1;
-        if (GestorPrincipal.getInstance().devolverColeccionCarreras().get(seleccionado).getNumParticipantes() != 0) {
-            dorsal = dorsal + 1;
-        }
-        corrCarr = new CorredorCarrera(corredor, dorsal);
-        System.out.println(corrCarr.toString());
+        corrCarr = new CorredorCarrera(corredor, dorsal);  
         int seleccionad = jTableCarreras.getSelectedRow();
         if (seleccionad >= 0) {
             Carrera carrera = carreraSeleccionada();
             System.out.println(carrera.toString());
+              System.out.println(corrCarr.toString());
               carrera.getCorredores().add(corrCarr);
-         
+            System.out.println("el corredor añañdido es: "+carrera.getCorredores().get(0));
+                 jTableCorredoresCarrera.setModel(new TableModelCorredorCarrera(carreraSeleccionada().getCorredores()));
         }
    this.rellenarTable();
-   this.rellenarTableCorredoresCarrera();
+  // this.rellenarTableCorredoresCarrera();
    this.rellenarTableDisponibles();
 
     }//GEN-LAST:event_jButtonAnadirCorredorActionPerformed

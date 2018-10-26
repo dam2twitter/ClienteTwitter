@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import modelo.Carrera;
 import modelo.Corredor;
 import org.openide.util.Exceptions;
@@ -140,7 +141,10 @@ public class GestorPrincipal {
      */
     public void anadirCorredor(String nombre, String apellidos, Date fechaNacimiento, String dni, String direccion) {
         Corredor c = new Corredor(nombre, apellidos, fechaNacimiento, dni, direccion);
-        corredores.put(c.getDni(), c);
+      {
+            corredores.put(c.getDni(), c);
+        
+        }
     }
 
     public void anadirCarrera(String nombre, String lugar, String identificador, Date fecha) {

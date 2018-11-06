@@ -7,7 +7,11 @@ package Interfaz;
 
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import logica.GestorPrincipal;
+import org.netbeans.validation.api.builtin.stringvalidation.StringValidators;
+import org.netbeans.validation.api.ui.ValidationGroup;
 
 /**
  *
@@ -24,7 +28,28 @@ public class FormularioAltaCarreras extends javax.swing.JDialog {
         super(parent, modal);
         pantallaPrincipal = (MainPantallaPrincipalCorredor) parent;
         initComponents();
-       
+        jButtonAceptarCarrera.setEnabled(false);
+        validador();
+
+    }
+
+    private void validador() {
+        ValidationGroup group = validationPanel.getValidationGroup();
+        group.add(jTextFieldNombre, StringValidators.REQUIRE_NON_EMPTY_STRING);
+        group.add(jTextFieldLugar, StringValidators.REQUIRE_NON_EMPTY_STRING);
+        group.add(jTextFieldIdCarrera, StringValidators.REQUIRE_NON_EMPTY_STRING);
+ group.add(jTextFieldNumParticipantes, StringValidators.REQUIRE_NON_NEGATIVE_NUMBER,StringValidators.REQUIRE_NON_EMPTY_STRING, StringValidators.REQUIRE_VALID_INTEGER );
+        validationPanel.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (validationPanel.getProblem() == null) {
+                    jButtonAceptarCarrera.setEnabled(true);
+                } else {
+                    jButtonAceptarCarrera.setEnabled(false);
+                }
+            }
+        });
+
     }
 
     /**
@@ -36,12 +61,6 @@ public class FormularioAltaCarreras extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanelCarreras = new javax.swing.JPanel();
-        jLabelFecha = new javax.swing.JLabel();
-        BotonAceptar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        Volver = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextFieldNombre = new javax.swing.JTextField();
@@ -52,78 +71,18 @@ public class FormularioAltaCarreras extends javax.swing.JDialog {
         jSpinnerFecha = new javax.swing.JSpinner();
         jTextFieldIdCarrera = new javax.swing.JTextField();
         jLabelIdCarrera = new javax.swing.JLabel();
+        validationPanel = new org.netbeans.validation.api.ui.swing.ValidationPanel();
+        jLabelParticipantes = new javax.swing.JLabel();
+        jTextFieldNumParticipantes = new javax.swing.JTextField();
+        jButtonAceptarCarrera = new javax.swing.JButton();
+        jButtonCancelarCarrera = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        jLabelFecha.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabelFecha.setText("Participantes:");
-
-        BotonAceptar.setText("Aceptar");
-        BotonAceptar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonAceptarActionPerformed(evt);
-            }
-        });
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Nombre", "Apellido", "DNI", "Dorsal"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        Volver.setText("Volver");
-        Volver.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                VolverActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanelCarrerasLayout = new javax.swing.GroupLayout(jPanelCarreras);
-        jPanelCarreras.setLayout(jPanelCarrerasLayout);
-        jPanelCarrerasLayout.setHorizontalGroup(
-            jPanelCarrerasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCarrerasLayout.createSequentialGroup()
-                .addContainerGap(57, Short.MAX_VALUE)
-                .addGroup(jPanelCarrerasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanelCarrerasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 787, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanelCarrerasLayout.createSequentialGroup()
-                            .addComponent(BotonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(Volver, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(69, 69, 69))
-        );
-        jPanelCarrerasLayout.setVerticalGroup(
-            jPanelCarrerasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelCarrerasLayout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jLabelFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelCarrerasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BotonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Volver, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36))
-        );
 
         jLabel1.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
         jLabel1.setText("Formulario alta de carrera");
 
         jTextFieldNombre.setBackground(new java.awt.Color(204, 204, 204));
-        jTextFieldNombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldNombreActionPerformed(evt);
-            }
-        });
 
         jLabelNombreCarrera.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabelNombreCarrera.setText("Nombre de la carrera:");
@@ -143,6 +102,11 @@ public class FormularioAltaCarreras extends javax.swing.JDialog {
         jLabelIdCarrera.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabelIdCarrera.setText("Id de la carrera:");
 
+        jLabelParticipantes.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabelParticipantes.setText("Nº de participantes");
+
+        jTextFieldNumParticipantes.setBackground(new java.awt.Color(204, 204, 204));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -155,6 +119,11 @@ public class FormularioAltaCarreras extends javax.swing.JDialog {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabelParticipantes, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTextFieldNumParticipantes, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(validationPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabelFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -187,81 +156,98 @@ public class FormularioAltaCarreras extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldLugar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelLugarCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldIdCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelIdCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(51, 51, 51)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldNumParticipantes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelParticipantes, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSpinnerFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(validationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
+
+        jButtonAceptarCarrera.setText("Aceptar");
+        jButtonAceptarCarrera.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAceptarCarreraActionPerformed(evt);
+            }
+        });
+
+        jButtonCancelarCarrera.setText("Volver");
+        jButtonCancelarCarrera.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarCarreraActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jPanelCarreras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(25, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(423, 423, 423)
+                .addComponent(jButtonAceptarCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(jButtonCancelarCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanelCarreras, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addGap(63, 63, 63)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonAceptarCarrera, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+                    .addComponent(jButtonCancelarCarrera, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldNombreActionPerformed
-
-    private void BotonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonAceptarActionPerformed
-        // TODO add your handling code here:
+    private void jButtonAceptarCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarCarreraActionPerformed
         String nombre = jTextFieldNombre.getText();
         String lugar = jTextFieldLugar.getText();
+        String id = jTextFieldIdCarrera.getText();
         Date fecha = (Date) jSpinnerFecha.getValue();
-        String idCarrera = jTextFieldIdCarrera.getText();
-         GestorPrincipal.getInstance().anadirCarrera(nombre, lugar, idCarrera, fecha);
-         
+        int participantes = Integer.parseInt(jTextFieldNumParticipantes.getText());
+        GestorPrincipal.getInstance().anadirCarrera(nombre, lugar, id, fecha, participantes);
+        JOptionPane.showMessageDialog(this, "Se ha creado una carrera");
         setVisible(false);
-        JOptionPane.showMessageDialog(this, "Se ha creado una carrera", "Alta", JOptionPane.INFORMATION_MESSAGE);
-        
-    }//GEN-LAST:event_BotonAceptarActionPerformed
+    }//GEN-LAST:event_jButtonAceptarCarreraActionPerformed
 
-    private void VolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverActionPerformed
+    private void jButtonCancelarCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarCarreraActionPerformed
         setVisible(false);
-    }//GEN-LAST:event_VolverActionPerformed
+    }//GEN-LAST:event_jButtonCancelarCarreraActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BotonAceptar;
-    private javax.swing.JButton Volver;
+    private javax.swing.JButton jButtonAceptarCarrera;
+    private javax.swing.JButton jButtonCancelarCarrera;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabelFecha;
     private javax.swing.JLabel jLabelFecha1;
     private javax.swing.JLabel jLabelIdCarrera;
     private javax.swing.JLabel jLabelLugarCarrera;
     private javax.swing.JLabel jLabelNombreCarrera;
+    private javax.swing.JLabel jLabelParticipantes;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanelCarreras;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinnerFecha;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextFieldIdCarrera;
     private javax.swing.JTextField jTextFieldLugar;
     private javax.swing.JTextField jTextFieldNombre;
+    private javax.swing.JTextField jTextFieldNumParticipantes;
+    private org.netbeans.validation.api.ui.swing.ValidationPanel validationPanel;
     // End of variables declaration//GEN-END:variables
 }

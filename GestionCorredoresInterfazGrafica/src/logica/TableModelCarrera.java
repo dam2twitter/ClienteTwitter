@@ -11,12 +11,12 @@ import modelo.Carrera;
 
 /**
  *
- * @author gnord
+ * @author daniel regueiro
  */
 public class TableModelCarrera extends AbstractTableModel {
 
     private final List<Carrera> listaCarrera;
-    private final String[] columnas = {"Nombre", "Identificador", "Lugar", "Fecha"};
+    private final String[] columnas = {"Nombre", "Identificador", "Lugar", "Fecha","Participantes"};
 
     public TableModelCarrera(List<Carrera> listaCarrera) {
         this.listaCarrera = listaCarrera;
@@ -49,6 +49,8 @@ public class TableModelCarrera extends AbstractTableModel {
                 return listaCarrera.get(filas).getLugar();
             case 3:
                 return listaCarrera.get(filas).getFecha();
+            case 4:
+                return listaCarrera.get(filas).getNumParticipantes();
         }
         return null;
     }

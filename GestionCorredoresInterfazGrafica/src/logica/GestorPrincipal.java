@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import modelo.Carrera;
 import modelo.Corredor;
 import org.openide.util.Exceptions;
@@ -147,8 +146,8 @@ public class GestorPrincipal {
         }
     }
 
-    public void anadirCarrera(String nombre, String lugar, String identificador, Date fecha) {
-        Carrera c = new Carrera(nombre, lugar, identificador, fecha);
+    public void anadirCarrera(String nombre, String lugar, String identificador, Date fecha,int participantes) {
+        Carrera c = new Carrera(nombre, lugar, identificador, fecha,participantes);
         carreras.put(c.getIdentificador(), c);
     }
 

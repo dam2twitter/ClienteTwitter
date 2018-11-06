@@ -22,13 +22,13 @@ public class Carrera implements Serializable{
     private Date fecha;
     private List<CorredorCarrera> corredores;
 
-    public Carrera( String nombre, String lugar,String identificador,Date Fecha) {
+    public Carrera( String nombre, String lugar,String identificador,Date fecha,int participantes) {
         this.identificador = identificador;
         this.nombre = nombre;
         this.lugar = lugar;
         this.fecha=fecha;
         this.corredores=new ArrayList<CorredorCarrera>();
-        this.numParticipantes=100;
+        this.numParticipantes=participantes;
     }
 
     public String getIdentificador() {

@@ -69,6 +69,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         jMenuItemAltaCarrera = new javax.swing.JMenuItem();
         jMenuItemVisualCorredor = new javax.swing.JMenuItem();
         jMenuVerCarrera = new javax.swing.JMenuItem();
+        jMenuItemConfiguracion = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -114,6 +115,14 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         });
         jMenuPrincipal.add(jMenuVerCarrera);
 
+        jMenuItemConfiguracion.setText("Configuración");
+        jMenuItemConfiguracion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConfiguracionActionPerformed(evt);
+            }
+        });
+        jMenuPrincipal.add(jMenuItemConfiguracion);
+
         jMenuBar1.add(jMenuPrincipal);
 
         setJMenuBar(jMenuBar1);
@@ -123,7 +132,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(278, Short.MAX_VALUE)
+                .addContainerGap(512, Short.MAX_VALUE)
                 .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49))
             .addGroup(layout.createSequentialGroup()
@@ -172,6 +181,11 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         visCarreras.setVisible(true);
     }//GEN-LAST:event_jMenuVerCarreraActionPerformed
 
+    private void jMenuItemConfiguracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConfiguracionActionPerformed
+       FormularioConfiguracion configuracion=new FormularioConfiguracion(this, true);
+       configuracion.setVisible(true);
+    }//GEN-LAST:event_jMenuItemConfiguracionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -215,6 +229,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItemAltaCarrera;
     private javax.swing.JMenuItem jMenuItemAltaCorredor;
+    private javax.swing.JMenuItem jMenuItemConfiguracion;
     private javax.swing.JMenuItem jMenuItemVisualCorredor;
     private javax.swing.JMenu jMenuPrincipal;
     private javax.swing.JMenuItem jMenuVerCarrera;

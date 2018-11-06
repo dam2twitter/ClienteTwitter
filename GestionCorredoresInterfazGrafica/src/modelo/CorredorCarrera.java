@@ -20,6 +20,7 @@ public class CorredorCarrera implements Serializable{
     public CorredorCarrera(Corredor corredor, int dorsal) {
         this.corredor = corredor;
         this.dorsal = dorsal;
+        
     }
 
     public Corredor getCorredor() {

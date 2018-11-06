@@ -28,7 +28,7 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
     public FormularioAltaCorredor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        Aceptar1.setEnabled(false);
+        AceptarCrearCorredor.setEnabled(false);
         GestorPrincipal.getInstance().volcarCsvCorredoresAColeccion();
         validador();
     }
@@ -36,6 +36,7 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
     public FormularioAltaCorredor(VisualizadorCorredores parent, boolean modal, Corredor corredorSeleccionado) {
         super(parent, modal);
         initComponents();
+        this.corredorSeleccionado=corredorSeleccionado;
         jTextFieldNombre.setText(corredorSeleccionado.getNombre());
         jTextFieldApellidos.setText(corredorSeleccionado.getApellidos());
         jTextFieldDireccion.setText(corredorSeleccionado.getDireccion());
@@ -67,7 +68,7 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
         jSpinnerFecha = new javax.swing.JSpinner();
         Volver = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        Aceptar1 = new javax.swing.JButton();
+        AceptarCrearCorredor = new javax.swing.JButton();
         validationPanel = new org.netbeans.validation.api.ui.swing.ValidationPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -107,10 +108,10 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
         jLabel1.setText("Formulario dar de alta corredor");
 
-        Aceptar1.setText("Aceptar");
-        Aceptar1.addActionListener(new java.awt.event.ActionListener() {
+        AceptarCrearCorredor.setText("Aceptar");
+        AceptarCrearCorredor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Aceptar1ActionPerformed(evt);
+                AceptarCrearCorredorActionPerformed(evt);
             }
         });
 
@@ -128,7 +129,7 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(524, 524, 524)
-                                .addComponent(Aceptar1, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                                .addComponent(AceptarCrearCorredor, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
                                 .addGap(44, 44, 44)
                                 .addComponent(Volver, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -186,7 +187,7 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Volver, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Aceptar1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(AceptarCrearCorredor, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -228,17 +229,17 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
             @Override
             public void stateChanged(ChangeEvent e) {
                 if (validationPanel.getProblem() == null) {
-                    Aceptar1.setEnabled(true);
+                    AceptarCrearCorredor.setEnabled(true);
                 } else {
-                    Aceptar1.setEnabled(false);
+                    AceptarCrearCorredor.setEnabled(false);
                 }
             }
         });
 
     }
-    private void Aceptar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aceptar1ActionPerformed
+    private void AceptarCrearCorredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AceptarCrearCorredorActionPerformed
         // TODO add your handling code here:  
-        boolean anadido = false;
+        
         String nombre = jTextFieldNombre.getText();
         String apellido = jTextFieldApellidos.getText();
         String dni = jTextFieldDni.getText();
@@ -248,24 +249,26 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
             if (GestorPrincipal.getInstance().buscarUnCorredorDni(jTextFieldDni.getText()) == null) {
                 GestorPrincipal.getInstance().anadirCorredor(nombre, apellido, fecha, dni, direccion);
                 JOptionPane.showMessageDialog(this, "Se ha creado un corredor", "Alta", JOptionPane.INFORMATION_MESSAGE);
-                  setVisible(false);
+                setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(this, "El Dni ya existe en la base de datos, modifique la entrada", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
+            GestorPrincipal.getInstance().eleminarUnCorredor(dni);
             corredorSeleccionado.setNombre(nombre);
             corredorSeleccionado.setApellidos(apellido);
             corredorSeleccionado.setDireccion(direccion);
             corredorSeleccionado.setDni(dni);
             corredorSeleccionado.setFechaNacimiento(fecha);
+            GestorPrincipal.getInstance().anadirCorredor(nombre, apellido, fecha, dni, direccion);
             JOptionPane.showMessageDialog(this, "Se ha creado un corredor", "Alta", JOptionPane.INFORMATION_MESSAGE);
-              setVisible(false);
+            setVisible(false);
         }
-    }//GEN-LAST:event_Aceptar1ActionPerformed
+    }//GEN-LAST:event_AceptarCrearCorredorActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Aceptar1;
+    private javax.swing.JButton AceptarCrearCorredor;
     private javax.swing.JButton Volver;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelApellidos;

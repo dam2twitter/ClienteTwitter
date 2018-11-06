@@ -57,7 +57,7 @@
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" attributes="0">
                                   <EmptySpace min="-2" pref="524" max="-2" attributes="0"/>
-                                  <Component id="Aceptar1" pref="91" max="32767" attributes="0"/>
+                                  <Component id="AceptarCrearCorredor" pref="91" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                                   <Component id="Volver" pref="91" max="32767" attributes="0"/>
                               </Group>
@@ -133,7 +133,7 @@
                   <EmptySpace pref="23" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="Volver" alignment="3" min="-2" pref="43" max="-2" attributes="0"/>
-                      <Component id="Aceptar1" alignment="3" min="-2" pref="43" max="-2" attributes="0"/>
+                      <Component id="AceptarCrearCorredor" alignment="3" min="-2" pref="43" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
@@ -239,12 +239,12 @@
             <Property name="text" type="java.lang.String" value="Formulario dar de alta corredor"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="Aceptar1">
+        <Component class="javax.swing.JButton" name="AceptarCrearCorredor">
           <Properties>
             <Property name="text" type="java.lang.String" value="Aceptar"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Aceptar1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AceptarCrearCorredorActionPerformed"/>
           </Events>
         </Component>
         <Component class="org.netbeans.validation.api.ui.swing.ValidationPanel" name="validationPanel">

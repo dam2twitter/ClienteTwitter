@@ -112,6 +112,11 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
         });
 
         jButtonEliminarCorredor.setText("Eliminar Corredor");
+        jButtonEliminarCorredor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminarCorredorActionPerformed(evt);
+            }
+        });
 
         jTableCorredoresDisponibles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -218,16 +223,16 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
         return carrera;
     }
     private void jButtonAnadirCorredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnadirCorredorActionPerformed
-        int seleccionado = jTableCorredoresDisponibles.getSelectedRow();
+        int corredorSeleccionado = jTableCorredoresDisponibles.getSelectedRow();
         Corredor corredor = null;
         CorredorCarrera corrCarr;
-        if (seleccionado >= 0) {
-            corredor = GestorPrincipal.getInstance().devolverColeccionCorredores().get(seleccionado);
+        if (corredorSeleccionado >= 0) {
+            corredor = GestorPrincipal.getInstance().devolverColeccionCorredores().get(corredorSeleccionado);
         }
         int dorsal = 1;
 
-        int seleccionad = jTableCarreras.getSelectedRow();
-        if (seleccionad >= 0) {
+        int carreraSeleccionada = jTableCarreras.getSelectedRow();
+        if (carreraSeleccionada >= 0) {
             Carrera carrera = carreraSeleccionada();
             dorsal = carrera.getCorredores().size() + 1;
             corrCarr = new CorredorCarrera(corredor, dorsal);
@@ -236,10 +241,16 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
             jTableCorredoresCarrera.setModel(new TableModelCorredorCarrera(carreraSeleccionada().getCorredores()));
         }
         this.rellenarTable();
-
         this.rellenarTableDisponibles();
-
     }//GEN-LAST:event_jButtonAnadirCorredorActionPerformed
+
+    private void jButtonEliminarCorredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarCorredorActionPerformed
+       int corredorSeleccionado = jTableCorredoresCarrera.getSelectedRow();  
+        
+        
+        
+        
+    }//GEN-LAST:event_jButtonEliminarCorredorActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

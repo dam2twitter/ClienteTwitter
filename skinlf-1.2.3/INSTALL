@@ -1,0 +1,20 @@
+Installation
+To use SkinLF, you need:
+				
+	* 
+Sun Microsystems JRE1.2.2 or later is recommended
+					
+SkinLF has been tested with:
+				
+	* 
+Sun Microsystems JDK1.2.2 (Windows,Solaris,Linux)
+					
+	* 
+and Sun Microsystems JDK 1.3 (Windows)
+					
+To run applications and use SkinLF, you need to update your environment settings.
+
+Add /path-where-skinlf-is-installed/lib/skinlf.jar to your CLASSPATH variable. To compile, you will only need to update your CLASSPATH variable.
+			
+If you want to use SkinRegion to create irregular windows (currently available only on Microsoft Windows), add /path-where-skinlf-is-installed/lib/skinregion.jar to your CLASSPATH variable and /path-where-skinlf-is-installed/lib to your PATH.	SkinRegion uses a Dynamic Linked Library (/path-where-skinlf-is-installed/lib/skinregion.dll).
+			

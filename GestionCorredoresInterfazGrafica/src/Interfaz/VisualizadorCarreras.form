@@ -42,11 +42,7 @@
                               <Component id="jScrollPane2" min="-2" pref="632" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jButtonAnadirCorredor" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="jButtonVerCorredores" min="-2" pref="119" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jButtonEliminarCarrera" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jButtonEliminarCarrera" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jButtonVolver" alignment="1" max="32767" attributes="0"/>
                               <Component id="jButtonEliminarCorredor" alignment="1" max="32767" attributes="0"/>
@@ -66,10 +62,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane2" min="-2" pref="105" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jButtonVerCorredores" max="32767" attributes="0"/>
-                  <Component id="jButtonEliminarCarrera" pref="48" max="32767" attributes="0"/>
-              </Group>
+              <Component id="jButtonEliminarCarrera" min="-2" pref="48" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabelParticipantes1" min="-2" pref="32" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -136,6 +129,9 @@
               </Table>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTableCarrerasMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -206,14 +202,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonEliminarCarreraActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButtonVerCorredores">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Ver Corredores"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonVerCorredoresActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

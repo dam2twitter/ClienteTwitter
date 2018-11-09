@@ -1,0 +1,41 @@
+/* Apache Javadoc style sheet */
+
+/* Page background color */
+body { background-color: #FFFFFF }
+
+BODY  {font-family: "Verdana"; font-size: 9pt; color: 000000}
+TD  {font-family: "Verdana"; font-size: 9pt; color: 000000}
+TR  {font-family: "Verdana"; font-size: 9pt; color: 000000}
+FONT  {font-family: "Verdana"; font-size: 9pt; color: 000000}
+I  {font-family: "Verdana"; font-size: 9pt; color: 000000;font-style: italic}
+BIG  {font-family: "Verdana"; font-size: 13pt; color: 000000;font-weight: bold}
+TH  {font-family: "Verdana"; font-size: 9pt; color: 000000;font-weight: bold}
+H1 {font-family: "Arial"; font-size: 30pt; color: navy;}
+STRONG {font-family: "Verdana"; font-size: 9pt; color: 000000;text-decoration: none; margin-left=0}
+H2 {font-family: "Verdana"; font-size: 15pt; color: 000000;text-decoration: none; margin-left=0}
+H3 {font-family: "Verdana"; font-size: 9pt; color: 000000;text-decoration: none; margin-left=0}
+PRE {font-family: "Verdana"; font-size: 9pt; color: 000000}
+BLOCKQUOTE {font-family: "Verdana, Arial, Helvetica"; font-size:9pt; color: 000000}
+
+/* Table colors */
+.TableHeadingColor     { background: #D0D0D0 }
+.TableSubHeadingColor  { background: #E0E0E0 }
+.TableRowColor         { background: #F9F9F9 }
+
+/* Navigation bar fonts and colors */
+.NavBarCell1    { background-color:#D0D0D0;}
+.NavBarCell1Rev { background-color:#A0A0A0;}
+.NavBarFont1    { font-family: Arial, Helvetica, sans-serif; color:#000000;}
+.NavBarFont1Rev { font-family: Arial, Helvetica, sans-serif; color:#FFFFFF;}
+.NavBarCell2    { font-family: Arial, Helvetica, sans-serif; background-color:#E0E0E0;}
+.NavBarCell3    { font-family: Arial, Helvetica, sans-serif; background-color:#F0F0F0;}
+
+/* Font used in left-hand frame lists */
+.FrameTitleFont   { font-size: normal; font-family: Helvetica, Arial, sans-serif }
+.FrameHeadingFont { font-size: normal; font-family: Helvetica, Arial, sans-serif }
+.FrameItemFont    { font-size: 10pt; font-family: Helvetica, Arial, sans-serif }
+
+/* Link colors styling */
+A:link { color: #0000A0 }          /* unvisited link */
+A:visited { color: #A00000 }       /* visited links */
+A:active { color: #00A000 }        /* active links */

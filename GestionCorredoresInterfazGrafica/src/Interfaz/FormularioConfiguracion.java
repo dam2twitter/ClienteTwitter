@@ -16,17 +16,26 @@ import org.openide.util.Exceptions;
  * @author daniel
  */
 public class FormularioConfiguracion extends javax.swing.JDialog {
+
     /**
      * Creates new form FormularioConfiguracion
      */
     public FormularioConfiguracion(java.awt.Frame parent, boolean modal) {
+
         super(parent, modal);
+      
+             
+            
+           
+
         initComponents();
         DefaultComboBoxModel dcm = new DefaultComboBoxModel();
         for (UIManager.LookAndFeelInfo lfi : UIManager.getInstalledLookAndFeels()) {
             dcm.addElement(lfi.getName());
         }
+
         jComboBox1.setModel(dcm);
+
     }
 
     /**
@@ -91,21 +100,16 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        if (jComboBox1.getSelectedIndex() >-1) {
+        if (jComboBox1.getSelectedIndex() > -1) {
             try {
+
                 UIManager.setLookAndFeel(UIManager.getInstalledLookAndFeels()[jComboBox1.getSelectedIndex()].getClassName());
                 SwingUtilities.updateComponentTreeUI(getParent());
                 SwingUtilities.updateComponentTreeUI(this);
-            } catch (ClassNotFoundException ex) {
-                Exceptions.printStackTrace(ex);
-            } catch (InstantiationException ex) {
-                Exceptions.printStackTrace(ex);
-            } catch (IllegalAccessException ex) {
-                Exceptions.printStackTrace(ex);
-            } catch (UnsupportedLookAndFeelException ex) {
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
                 Exceptions.printStackTrace(ex);
             }
-            
+
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 

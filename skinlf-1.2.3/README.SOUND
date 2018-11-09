@@ -1,0 +1,30 @@
+What's new in SkinLF 0.3 ----------------- 25 November 2000 -
+
+Removed KDE sound support.
+Sound support was based on JDK1.2 feature but SkinLF should work also
+on JDK1.1.
+Patches (for JDK1.2) will be made available to SkinLF 0.3.
+
+What's new in SkinLF 0.2.3 ------------------- 13 June 2000 -
+
+Sound support in SkinLF is in its early stages.
+Some KDE themes include sounds for most window events.
+
+SkinLF can use these sounds for SkinWindowEvents (later InternalFrameEvents
+will also be supported, and later all events may have sounds!)
+
+To enable sounds in your app:
+
+	1. Set the skin
+		SkinLookAndFeel.setSkin(new CompoundSkin(myGtkSkin, myKdeSkin));
+
+	2. Ensure you are using a Sound-featured KDE skin
+
+	3. Enable sound in KDE skin
+		((KdeSkin)myKdeSkin).setSoundEnabled(true);
+
+Easier configuration will be added to SkinChooser in next versions.
+
+Questions, comments, feedback can be send to fred@L2FProd.com
+
+

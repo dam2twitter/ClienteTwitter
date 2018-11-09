@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.UIManager;
+
 import logica.GestorPrincipal;
 import org.openide.util.Exceptions;
 
@@ -28,6 +30,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
      * Creates new form MainCorredor
      */
     public MainPantallaPrincipalCorredor() {
+        cargarLookAndFeel();
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Gestor corredores");
@@ -36,7 +39,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
 
         try {
             Image image = ImageIO.read(getClass().getResource(RUTA_LOGO));
-            image = image.getScaledInstance(200,200, Image.SCALE_SMOOTH);
+            image = image.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
             jLabelIcono.setIcon(new ImageIcon(image));
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
@@ -132,13 +135,14 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(512, Short.MAX_VALUE)
-                .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(jLabelIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(264, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabelIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(116, 116, 116))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,14 +181,31 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemVisualCorredorActionPerformed
 
     private void jMenuVerCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuVerCarreraActionPerformed
-        VisualizadorCarreras visCarreras=new VisualizadorCarreras(this, true);
+        VisualizadorCarreras visCarreras = new VisualizadorCarreras(this, true);
         visCarreras.setVisible(true);
     }//GEN-LAST:event_jMenuVerCarreraActionPerformed
 
     private void jMenuItemConfiguracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConfiguracionActionPerformed
-       FormularioConfiguracion configuracion=new FormularioConfiguracion(this, true);
-       configuracion.setVisible(true);
+        FormularioConfiguracion configuracion = new FormularioConfiguracion(this, true);
+        configuracion.setVisible(true);
     }//GEN-LAST:event_jMenuItemConfiguracionActionPerformed
+    public void cargarLookAndFeel() {
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Platano", "com.jtattoo.plaf.bernstein.BernsteinLookAndFeel"));
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Aluminio", "com.jtattoo.plaf.aluminium.AluminiumLookAndFeel"));
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Acrilico", "com.jtattoo.plaf.acryl.AcrylLookAndFeel"));
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Aero", "com.jtattoo.plaf.aero.AeroLookAndFeel"));
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Fast", "com.jtattoo.plaf.fast.FastLookAndFeel"));
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Grafito", "com.jtattoo.plaf.graphite.GraphiteLookAndFeel"));
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Hifi", "com.jtattoo.plaf.hifi.HifiLookAndFeel"));
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Mint", "com.jtattoo.plaf.mint.MintLookAndFeel"));
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Luna", "com.jtattoo.plaf.luna.LunaLookAndFeel"));
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Mcwin", "com.jtattoo.plaf.mcwin.McWinLookAndFeel"));
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Noire", "com.jtattoo.plaf.noire.NoireLookAndFeel"));
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Acrilico", "com.jtattoo.plaf.acryl.AcrylLookAndFeel"));
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Smart", "com.jtattoo.plaf.smart.SmartLookAndFeel"));
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Texture", "com.jtattoo.plaf.texture.TextureLookAndFeel"));
+
+    }
 
     /**
      * @param args the command line arguments

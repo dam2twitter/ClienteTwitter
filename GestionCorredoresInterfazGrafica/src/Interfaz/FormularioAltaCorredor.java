@@ -34,6 +34,9 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
         validador();
     }
 
+   
+    
+
     public FormularioAltaCorredor(VisualizadorCorredores parent, boolean modal, Corredor corredorSeleccionado) {
         super(parent, modal);
         initComponents();

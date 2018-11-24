@@ -239,14 +239,14 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
 
     private void jButtonModificarCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarCarreraActionPerformed
         int seleccionado = jTableCarreras.getSelectedRow();
-     
         if (seleccionado >= 0) {
             Carrera carrera = carreraSeleccionada();
-            GestorPrincipal.getInstance().eleminarCarrera(carrera.getIdentificador());
+            FormularioAltaCarreras altamodificacion = new FormularioAltaCarreras(this, true, carrera);
+            altamodificacion.setVisible(true);
             this.rellenarTable();
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione una carrera", "Error", JOptionPane.ERROR_MESSAGE);
-           
+
         }
     }//GEN-LAST:event_jButtonModificarCarreraActionPerformed
     public Carrera carreraSeleccionada() {
@@ -254,6 +254,22 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
         int seleccionad = jTableCarreras.getSelectedRow();
         if (seleccionad >= 0) {
             carrera = GestorPrincipal.getInstance().devolverColeccionCarreras().get(seleccionad);
+        }
+        if (!carrera.isAbierta()) {
+            jButtonEliminarCarrera1.setEnabled(false);
+            jButtonAnadirCorredor.setEnabled(false);
+            jButtonCerrarCarrera.setEnabled(false);
+            jButtonEliminarCorredor.setEnabled(false);
+            jButtonModificarCarrera.setEnabled(false);
+        }else{
+        jButtonEliminarCarrera1.setEnabled(true);
+            jButtonAnadirCorredor.setEnabled(true);
+            jButtonCerrarCarrera.setEnabled(true);
+            jButtonEliminarCorredor.setEnabled(true);
+            jButtonModificarCarrera.setEnabled(true);
+        
+        
+        
         }
         return carrera;
     }
@@ -274,22 +290,31 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
         Corredor corredor = null;
         CorredorCarrera corrCarr;
         boolean anadir = true;
+
         if (carreraSeleccionada < 0 || corredorSeleccionadoTablet < 0) {
             JOptionPane.showMessageDialog(this, "Seleccione una carrera y un corredor", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             corredor = corredorSeleccionado();
             Carrera carrera = carreraSeleccionada();
+
             for (CorredorCarrera cor : carrera.getCorredores()) {
                 if (cor.getCorredor().getDni().equals(corredor.getDni())) {
+                  
                     JOptionPane.showMessageDialog(this, "El corredor ya esta apuntado", "Error", JOptionPane.ERROR_MESSAGE);
                     anadir = false;
                 }
+            }
+            
+            if (carrera.getNumParticipantes() <= carrera.getNumeroInscriptos()) {
+                anadir = false;
+                JOptionPane.showMessageDialog(this, "No quedan plazas", "Error", JOptionPane.ERROR_MESSAGE);
             }
             if (anadir) {
                 carrera.getDorsales().add(carrera.getDorsales().size() + 1);
                 dorsal = carrera.getDorsales().size();
                 corrCarr = new CorredorCarrera(corredor, dorsal);
                 carrera.getCorredores().add(corrCarr);
+                  carrera.setNumeroInscriptos(carrera.getNumeroInscriptos()+1);
             }
             jTableCorredoresCarrera.setModel(new TableModelCorredorCarrera(carreraSeleccionada().getCorredores()));
         }
@@ -297,6 +322,7 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
         this.rellenarTableDisponibles();
 
     }//GEN-LAST:event_jButtonAnadirCorredorActionPerformed
+
 
     private void jButtonEliminarCorredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarCorredorActionPerformed
         int corredorSeleccionado = jTableCorredoresCarrera.getSelectedRow();
@@ -306,7 +332,7 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
             rellenarTableCorredoresCarrera();
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione una carrera y un corredor", "Error", JOptionPane.ERROR_MESSAGE);
-         
+
         }
     }//GEN-LAST:event_jButtonEliminarCorredorActionPerformed
 
@@ -320,7 +346,17 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
     }//GEN-LAST:event_jTableCarrerasMouseClicked
 
     private void jButtonEliminarCarrera1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarCarrera1ActionPerformed
-        // TODO add your handling code here:
+        int seleccionado = jTableCarreras.getSelectedRow();
+
+        if (seleccionado >= 0) {
+            Carrera carrera = carreraSeleccionada();
+
+            GestorPrincipal.getInstance().eleminarCarrera(carrera.getIdentificador());
+            this.rellenarTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione una carrera", "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
     }//GEN-LAST:event_jButtonEliminarCarrera1ActionPerformed
 
     private void jButtonCerrarCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarCarreraActionPerformed

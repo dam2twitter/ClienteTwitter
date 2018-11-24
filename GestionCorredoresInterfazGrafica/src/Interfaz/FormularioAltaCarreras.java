@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import logica.GestorPrincipal;
+import modelo.Carrera;
 import org.netbeans.validation.api.builtin.stringvalidation.StringValidators;
 import org.netbeans.validation.api.ui.ValidationGroup;
 
@@ -19,6 +20,7 @@ import org.netbeans.validation.api.ui.ValidationGroup;
  */
 public class FormularioAltaCarreras extends javax.swing.JDialog {
 
+    private Carrera carrera = null;
     private MainPantallaPrincipalCorredor pantallaPrincipal;
 
     /**
@@ -33,12 +35,25 @@ public class FormularioAltaCarreras extends javax.swing.JDialog {
 
     }
 
+    public FormularioAltaCarreras(VisualizadorCarreras parent, boolean modal, Carrera carreraSeleccionada) {
+
+        super(parent, modal);
+        initComponents();
+        this.carrera = carreraSeleccionada;
+        this.jSpinnerFecha.setValue(carreraSeleccionada.getFecha());
+        jTextFieldIdCarrera.setText(carreraSeleccionada.getIdentificador());
+        jTextFieldLugar.setText(carreraSeleccionada.getLugar());
+        jTextFieldNombre.setText(carreraSeleccionada.getNombre());
+        jTextFieldNumParticipantes.setText(Integer.toString(carreraSeleccionada.getNumParticipantes()));
+        validador();
+    }
+
     private void validador() {
         ValidationGroup group = validationPanel.getValidationGroup();
         group.add(jTextFieldNombre, StringValidators.REQUIRE_NON_EMPTY_STRING);
         group.add(jTextFieldLugar, StringValidators.REQUIRE_NON_EMPTY_STRING);
         group.add(jTextFieldIdCarrera, StringValidators.REQUIRE_NON_EMPTY_STRING);
- group.add(jTextFieldNumParticipantes, StringValidators.REQUIRE_NON_NEGATIVE_NUMBER,StringValidators.REQUIRE_NON_EMPTY_STRING, StringValidators.REQUIRE_VALID_INTEGER );
+        group.add(jTextFieldNumParticipantes, StringValidators.REQUIRE_NON_NEGATIVE_NUMBER, StringValidators.REQUIRE_NON_EMPTY_STRING, StringValidators.REQUIRE_VALID_INTEGER);
         validationPanel.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {

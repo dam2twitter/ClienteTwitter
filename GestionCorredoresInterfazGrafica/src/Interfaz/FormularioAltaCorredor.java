@@ -11,6 +11,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import logica.GestorPrincipal;
 import modelo.Corredor;
+import org.netbeans.validation.api.builtin.stringvalidation.DniValidator;
 import org.netbeans.validation.api.builtin.stringvalidation.StringValidators;
 import org.netbeans.validation.api.ui.ValidationGroup;
 
@@ -224,7 +225,7 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
         group.add(jTextFieldNombre, StringValidators.REQUIRE_NON_EMPTY_STRING);
         group.add(jTextFieldApellidos, StringValidators.REQUIRE_NON_EMPTY_STRING);
         group.add(jTextFieldDireccion, StringValidators.REQUIRE_NON_EMPTY_STRING);
-        group.add(jTextFieldDni, StringValidators.REQUIRE_NON_EMPTY_STRING);
+        group.add(jTextFieldDni, StringValidators.REQUIRE_NON_EMPTY_STRING,new DniValidator());
         validationPanel.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {

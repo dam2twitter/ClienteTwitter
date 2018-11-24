@@ -69,7 +69,9 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
         jTableCorredoresDisponibles = new javax.swing.JTable();
         jLabelParticipantes1 = new javax.swing.JLabel();
         jButtonAnadirCorredor = new javax.swing.JButton();
-        jButtonEliminarCarrera = new javax.swing.JButton();
+        jButtonModificarCarrera = new javax.swing.JButton();
+        jButtonEliminarCarrera1 = new javax.swing.JButton();
+        jButtonCerrarCarrera = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -146,10 +148,24 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
             }
         });
 
-        jButtonEliminarCarrera.setText("Eleminar Carrera");
-        jButtonEliminarCarrera.addActionListener(new java.awt.event.ActionListener() {
+        jButtonModificarCarrera.setText("Modificar Carrera");
+        jButtonModificarCarrera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonEliminarCarreraActionPerformed(evt);
+                jButtonModificarCarreraActionPerformed(evt);
+            }
+        });
+
+        jButtonEliminarCarrera1.setText("Eliminar Carrera");
+        jButtonEliminarCarrera1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminarCarrera1ActionPerformed(evt);
+            }
+        });
+
+        jButtonCerrarCarrera.setText("Cerrar Carrera");
+        jButtonCerrarCarrera.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCerrarCarreraActionPerformed(evt);
             }
         });
 
@@ -161,23 +177,29 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabelParticipantes, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabelParticipantes, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(16, 16, 16))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabelParticipantes1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabelTituloCarreras, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButtonAnadirCorredor)
-                            .addComponent(jButtonEliminarCarrera)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jButtonVolver, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButtonEliminarCorredor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addContainerGap(75, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelTituloCarreras, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jButtonAnadirCorredor)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jButtonVolver, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButtonEliminarCorredor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jButtonCerrarCarrera)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jButtonModificarCarrera)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jButtonEliminarCarrera1)))
+                            .addComponent(jLabelParticipantes1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(59, 59, 59))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,7 +209,10 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButtonEliminarCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonModificarCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonEliminarCarrera1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonCerrarCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelParticipantes1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -212,21 +237,23 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
         setVisible(false);
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
-    private void jButtonEliminarCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarCarreraActionPerformed
+    private void jButtonModificarCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarCarreraActionPerformed
         int seleccionado = jTableCarreras.getSelectedRow();
+     
         if (seleccionado >= 0) {
             Carrera carrera = carreraSeleccionada();
             GestorPrincipal.getInstance().eleminarCarrera(carrera.getIdentificador());
             this.rellenarTable();
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione una carrera", "Error", JOptionPane.ERROR_MESSAGE);
+           
         }
-    }//GEN-LAST:event_jButtonEliminarCarreraActionPerformed
+    }//GEN-LAST:event_jButtonModificarCarreraActionPerformed
     public Carrera carreraSeleccionada() {
         Carrera carrera = null;
         int seleccionad = jTableCarreras.getSelectedRow();
         if (seleccionad >= 0) {
-            carrera = GestorPrincipal.getInstance().devolverColeccionCarreras().get(seleccionad);  
+            carrera = GestorPrincipal.getInstance().devolverColeccionCarreras().get(seleccionad);
         }
         return carrera;
     }
@@ -259,7 +286,8 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
                 }
             }
             if (anadir) {
-                dorsal = carrera.getCorredores().size() + 1;
+                carrera.getDorsales().add(carrera.getDorsales().size() + 1);
+                dorsal = carrera.getDorsales().size();
                 corrCarr = new CorredorCarrera(corredor, dorsal);
                 carrera.getCorredores().add(corrCarr);
             }
@@ -267,17 +295,18 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
         }
         this.rellenarTable();
         this.rellenarTableDisponibles();
-  
+
     }//GEN-LAST:event_jButtonAnadirCorredorActionPerformed
 
     private void jButtonEliminarCorredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarCorredorActionPerformed
         int corredorSeleccionado = jTableCorredoresCarrera.getSelectedRow();
         int carreraSeleccionada = jTableCarreras.getSelectedRow();
         if (carreraSeleccionada >= 0 && corredorSeleccionado >= 0) {
-                carreraSeleccionada().getCorredores().remove(corredorSeleccionado);
-                 rellenarTableCorredoresCarrera();
+            carreraSeleccionada().getCorredores().remove(corredorSeleccionado);
+            rellenarTableCorredoresCarrera();
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione una carrera y un corredor", "Error", JOptionPane.ERROR_MESSAGE);
+         
         }
     }//GEN-LAST:event_jButtonEliminarCorredorActionPerformed
 
@@ -290,11 +319,24 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jTableCarrerasMouseClicked
 
+    private void jButtonEliminarCarrera1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarCarrera1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonEliminarCarrera1ActionPerformed
+
+    private void jButtonCerrarCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarCarreraActionPerformed
+
+        carreraSeleccionada().setAbierta(false);
+        this.rellenarTable();
+        this.rellenarTableDisponibles();
+    }//GEN-LAST:event_jButtonCerrarCarreraActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAnadirCorredor;
-    private javax.swing.JButton jButtonEliminarCarrera;
+    private javax.swing.JButton jButtonCerrarCarrera;
+    private javax.swing.JButton jButtonEliminarCarrera1;
     private javax.swing.JButton jButtonEliminarCorredor;
+    private javax.swing.JButton jButtonModificarCarrera;
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JLabel jLabelParticipantes;
     private javax.swing.JLabel jLabelParticipantes1;

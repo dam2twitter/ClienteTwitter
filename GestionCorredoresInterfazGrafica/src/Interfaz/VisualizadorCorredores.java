@@ -5,6 +5,11 @@
  */
 package Interfaz;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.RowSorter.SortKey;
+import javax.swing.SortOrder;
+import javax.swing.table.TableRowSorter;
 import logica.GestorPrincipal;
 import logica.TableModelCorredor;
 import modelo.Corredor;
@@ -23,11 +28,17 @@ public class VisualizadorCorredores extends javax.swing.JDialog {
         initComponents();
         this.rellenarTable();
     }
-
+    
     public void rellenarTable() {
-
-        jTable1.setModel(new TableModelCorredor(GestorPrincipal.getInstance().devolverColeccionCorredores()));
-
+        
+        TableModelCorredor tbm = new TableModelCorredor(GestorPrincipal.getInstance().devolverColeccionCorredores());
+        jTable1.setModel(tbm);
+        TableRowSorter<TableModelCorredor> sorter = new TableRowSorter<>(tbm);
+        jTable1.setRowSorter(sorter);
+        List<SortKey>sortkeys=new ArrayList<>();
+        sortkeys.add(new SortKey(0,SortOrder.ASCENDING));
+        sorter.setSortKeys(sortkeys);
+        
     }
 
     /**
@@ -119,7 +130,7 @@ public class VisualizadorCorredores extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonVolverVisualizadorActionPerformed
 
     private void jButtonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarActionPerformed
-        int seleccionado = jTable1.getSelectedRow();
+        int seleccionado = jTable1.convertRowIndexToModel(jTable1.getSelectedRow());
         if (seleccionado >= 0) {
             Corredor corredorSeleccionado = GestorPrincipal.getInstance().devolverColeccionCorredores().get(seleccionado);
             FormularioAltaCorredor formularioModificar;
@@ -132,7 +143,7 @@ public class VisualizadorCorredores extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonModificarActionPerformed
 
     private void jButtonEliminarCorredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarCorredorActionPerformed
-  int seleccionado = jTable1.getSelectedRow();
+        int seleccionado = jTable1.convertRowIndexToModel(jTable1.getSelectedRow());
         if (seleccionado >= 0) {
             Corredor corredorSeleccionado = GestorPrincipal.getInstance().devolverColeccionCorredores().get(seleccionado);
             GestorPrincipal.getInstance().eleminarUnCorredor(corredorSeleccionado.getDni());

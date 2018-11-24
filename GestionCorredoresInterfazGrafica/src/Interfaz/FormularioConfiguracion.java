@@ -104,6 +104,7 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
             try {
 
                 UIManager.setLookAndFeel(UIManager.getInstalledLookAndFeels()[jComboBox1.getSelectedIndex()].getClassName());
+              
                 SwingUtilities.updateComponentTreeUI(getParent());
                 SwingUtilities.updateComponentTreeUI(this);
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {

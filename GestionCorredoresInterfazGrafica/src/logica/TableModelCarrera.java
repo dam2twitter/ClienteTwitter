@@ -15,8 +15,9 @@ import modelo.Carrera;
  */
 public class TableModelCarrera extends AbstractTableModel {
 
+
     private final List<Carrera> listaCarrera;
-    private final String[] columnas = {"Nombre", "Identificador", "Lugar", "Fecha","Participantes"};
+    private final String[] columnas = {"Nombre", "Identificador", "Lugar", "Fecha", "Participantes", "Estado"};
 
     public TableModelCarrera(List<Carrera> listaCarrera) {
         this.listaCarrera = listaCarrera;
@@ -51,6 +52,12 @@ public class TableModelCarrera extends AbstractTableModel {
                 return listaCarrera.get(filas).getFecha();
             case 4:
                 return listaCarrera.get(filas).getNumParticipantes();
+            case 5:
+                if (listaCarrera.get(filas).isAbierta()==true) {        
+                    return "Abierta";
+                } else {    
+                    return "Cerrada";
+                }
         }
         return null;
     }

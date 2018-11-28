@@ -23,7 +23,7 @@ public class Carrera implements Serializable{
     private List<CorredorCarrera> corredores;
     private boolean abierta;
     private List<Integer> dorsales;
-    private int numeroInscriptos;
+  
 
     public Carrera( String nombre, String lugar,String identificador,Date fecha,int participantes) {
         this.identificador = identificador;
@@ -32,19 +32,12 @@ public class Carrera implements Serializable{
         this.fecha=fecha;
         this.corredores=new ArrayList<CorredorCarrera>();
         this.numParticipantes=participantes;
-        this.numeroInscriptos=0;
+    
         this.abierta=true;
         this.dorsales=new ArrayList<Integer>();
     }
 
-    public int getNumeroInscriptos() {
-        return numeroInscriptos;
-    }
-
-    public void setNumeroInscriptos(int numeroInscriptos) {
-        this.numeroInscriptos = numeroInscriptos;
-    }
-
+ 
     public List<Integer> getDorsales() {
         return dorsales;
     }

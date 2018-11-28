@@ -28,12 +28,16 @@ public class GestorPrincipal {
     private File fileCarreras;
     private FileInputStream lector;
     private ObjectInputStream obInputS;
+    private Timer timerCopiaDeSeguridad;
+    private File fileOpcionesConfiguracion;
+    private OpcionesConfiguracion opciones;
 
     private GestorPrincipal() {
         corredores = new TreeMap();
-
+        timerCopiaDeSeguridad = new Timer();
         File archivoCorredores = new File("corredores.csv");
         fileCarreras = new File("carreras.dat");
+        fileOpcionesConfiguracion = new File("opcionesConfiguracion.dat");
         if (!fileCarreras.exists()) {
             carreras = new TreeMap();
         } else {
@@ -44,13 +48,25 @@ public class GestorPrincipal {
 
             } catch (FileNotFoundException ex) {
                 Exceptions.printStackTrace(ex);
-            } catch (IOException ex) {
-                Exceptions.printStackTrace(ex);
-            } catch (ClassNotFoundException ex) {
+            } catch (IOException | ClassNotFoundException ex) {
                 Exceptions.printStackTrace(ex);
             }
         }
+        if (!fileOpcionesConfiguracion.exists()) {
+            opciones = new OpcionesConfiguracion(5);
 
+        } else {
+            try {
+                lector = new FileInputStream(fileOpcionesConfiguracion);
+                obInputS = new ObjectInputStream(lector);
+                opciones = (OpcionesConfiguracion) obInputS.readObject();
+            } catch (FileNotFoundException ex) {
+                Exceptions.printStackTrace(ex);
+            } catch (IOException | ClassNotFoundException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+
+        }
         if (!archivoCorredores.exists()) {
             try {
                 archivoCorredores.createNewFile();
@@ -140,14 +156,14 @@ public class GestorPrincipal {
      */
     public void anadirCorredor(String nombre, String apellidos, Date fechaNacimiento, String dni, String direccion) {
         Corredor c = new Corredor(nombre, apellidos, fechaNacimiento, dni, direccion);
-      {
+        {
             corredores.put(c.getDni(), c);
-        
+
         }
     }
 
-    public void anadirCarrera(String nombre, String lugar, String identificador, Date fecha,int participantes) {
-        Carrera c = new Carrera(nombre, lugar, identificador, fecha,participantes);
+    public void anadirCarrera(String nombre, String lugar, String identificador, Date fecha, int participantes) {
+        Carrera c = new Carrera(nombre, lugar, identificador, fecha, participantes);
         carreras.put(c.getIdentificador(), c);
     }
 
@@ -158,7 +174,7 @@ public class GestorPrincipal {
     public void grabarArchivoCarreras() {
         CrearArchivoDatygrabarObjetos grabar = new CrearArchivoDatygrabarObjetos();
         grabar.crearArchivoYGrabarObjetos(fileCarreras, carreras);
-
+        grabar.crearArchivoYGrabarObjetos(fileOpcionesConfiguracion, opciones);
     }
 
     public Corredor buscarUnCorredorDni(String dni) {
@@ -184,7 +200,18 @@ public class GestorPrincipal {
         return listaCorredoresOrdenados;
     }
 
+    public void recibirTiempoCopiaSeguridad(int tiempo) {
+        opciones.setTiempoEntreCadaCopiaSeguridad(tiempo);
+    }
+
+    public int mandarTiempoCopiaSeguridad() {
+        return opciones.getTiempoEntreCadaCopiaSeguridad();
+    }
+
     public List<Corredor> devolverColeccionCorredores() {
         return new ArrayList(corredores.values());
     }
+
+
+
 }

@@ -5,15 +5,13 @@
  */
 package logica;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Map;
-
-
+import org.openide.util.Exceptions;
 
 /**
  *
@@ -36,9 +34,26 @@ public class CrearArchivoDatygrabarObjetos {
             ObjectOutputStream escritor = new ObjectOutputStream(fos);
             escritor.writeObject(carrera);
         } catch (FileNotFoundException ex) {
-           System.out.println("No se encuentra el archivo, fallo en la clase crearArchivosYGrabarObjetos");
+            System.out.println("No se encuentra el archivo, fallo en la clase crearArchivosYGrabarObjetos");
         } catch (IOException ex) {
-           System.out.println("No se puede escribir el archivo, fallo en la clase crearArchivosYGrabarObjetos");
+            System.out.println("No se puede escribir el archivo, fallo en la clase crearArchivosYGrabarObjetos");
+        }
+
+    }
+
+    public void crearArchivoYGrabarObjetos(File file, OpcionesConfiguracion opciones) {
+        FileOutputStream fos = null;
+
+        try {
+            fos = new FileOutputStream(file);
+            ObjectOutputStream escritor = new ObjectOutputStream(fos);
+            escritor.writeObject(opciones);
+
+        } catch (FileNotFoundException ex) {
+            Exceptions.printStackTrace(ex);
+            System.out.println("No se encuentra el archivo, fallo en la clase crearArchivosYGrabarObjetos");
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
         }
 
     }

@@ -9,6 +9,9 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import logica.GestorPrincipal;
 import org.openide.util.Exceptions;
 
 /**
@@ -25,10 +28,10 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
         super(parent, modal);
       
              
-            
-           
+                    
 
         initComponents();
+        jLabelTiempoEntreCopia.setText("La copia se realiza cada: " +GestorPrincipal.getInstance().mandarTiempoCopiaSeguridad());
         DefaultComboBoxModel dcm = new DefaultComboBoxModel();
         for (UIManager.LookAndFeelInfo lfi : UIManager.getInstalledLookAndFeels()) {
             dcm.addElement(lfi.getName());
@@ -36,6 +39,18 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
 
         jComboBox1.setModel(dcm);
 
+        
+        jSpinnerTiempoCopia.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                GestorPrincipal.getInstance().recibirTiempoCopiaSeguridad((int)jSpinnerTiempoCopia.getValue());
+                jLabelTiempoEntreCopia.setText("La copia se realiza cada: " +GestorPrincipal.getInstance().mandarTiempoCopiaSeguridad());
+            }
+        });
+        
+        
+        
+        
     }
 
     /**
@@ -50,6 +65,9 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jButtonVolver = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jSpinnerTiempoCopia = new javax.swing.JSpinner();
+        jLabelTiempoEntreCopia = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -69,20 +87,33 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
             }
         });
 
+        jLabel2.setText(org.openide.util.NbBundle.getMessage(FormularioConfiguracion.class, "FormularioConfiguracion.jLabel2.text")); // NOI18N
+
+        jSpinnerTiempoCopia.setModel(new javax.swing.SpinnerNumberModel(5, 5, null, 5));
+
+        jLabelTiempoEntreCopia.setText(org.openide.util.NbBundle.getMessage(FormularioConfiguracion.class, "FormularioConfiguracion.jLabelTiempoEntreCopia.text")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(111, 111, 111)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(242, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(81, 81, 81))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabelTiempoEntreCopia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(97, 97, 97)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jSpinnerTiempoCopia)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(242, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,7 +122,13 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 277, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jSpinnerTiempoCopia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabelTiempoEntreCopia)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 201, Short.MAX_VALUE)
                 .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(53, 53, 53))
         );
@@ -104,7 +141,7 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
             try {
 
                 UIManager.setLookAndFeel(UIManager.getInstalledLookAndFeels()[jComboBox1.getSelectedIndex()].getClassName());
-              
+           
                 SwingUtilities.updateComponentTreeUI(getParent());
                 SwingUtilities.updateComponentTreeUI(this);
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -123,5 +160,8 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelTiempoEntreCopia;
+    private javax.swing.JSpinner jSpinnerTiempoCopia;
     // End of variables declaration//GEN-END:variables
 }

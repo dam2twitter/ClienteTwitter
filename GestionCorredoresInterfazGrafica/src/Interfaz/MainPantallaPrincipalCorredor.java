@@ -12,8 +12,9 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.UIManager;
-
 import logica.GestorPrincipal;
 import org.openide.util.Exceptions;
 
@@ -31,12 +32,20 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
      */
     public MainPantallaPrincipalCorredor() {
         cargarLookAndFeel();
+        try {
+
+            JFrame.setDefaultLookAndFeelDecorated(true);
+            JDialog.setDefaultLookAndFeelDecorated(true);
+            UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
+         
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Gestor corredores");
         setIconImage(new ImageIcon(getClass().getResource(RUTA_LOGO)).getImage());
         GestorPrincipal.getInstance().volcarCsvCorredoresAColeccion();
-
         try {
             Image image = ImageIO.read(getClass().getResource(RUTA_LOGO));
             image = image.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
@@ -44,7 +53,6 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }
-
         //metodo para guardar la coleccion si se cierra en la cruz el programa
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -196,7 +204,6 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Aero", "com.jtattoo.plaf.aero.AeroLookAndFeel"));
         UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Fast", "com.jtattoo.plaf.fast.FastLookAndFeel"));
         UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Grafito", "com.jtattoo.plaf.graphite.GraphiteLookAndFeel"));
-        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Hifi", "com.jtattoo.plaf.hifi.HifiLookAndFeel"));
         UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Mint", "com.jtattoo.plaf.mint.MintLookAndFeel"));
         UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Luna", "com.jtattoo.plaf.luna.LunaLookAndFeel"));
         UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Mcwin", "com.jtattoo.plaf.mcwin.McWinLookAndFeel"));

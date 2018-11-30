@@ -14,6 +14,15 @@ import java.io.Serializable;
 public class OpcionesConfiguracion implements Serializable{
     
     private int tiempoEntreCadaCopiaSeguridad;
+    private String lookAndFeel;
+
+    public String getLookAndFeel() {
+        return lookAndFeel;
+    }
+
+    public void setLookAndFeel(String lookAndFeel) {
+        this.lookAndFeel = lookAndFeel;
+    }
 
     public int getTiempoEntreCadaCopiaSeguridad() {
         return tiempoEntreCadaCopiaSeguridad;
@@ -27,10 +36,7 @@ public class OpcionesConfiguracion implements Serializable{
         this.tiempoEntreCadaCopiaSeguridad = tiempoEntreCadaCopiaSeguridad;
     }
 
-    @Override
-    public String toString() {
-        return "OpcionesConfiguracion{" + "tiempoEntreCadaCopiaSeguridad=" + tiempoEntreCadaCopiaSeguridad + '}';
-    }
+   
 
     
     

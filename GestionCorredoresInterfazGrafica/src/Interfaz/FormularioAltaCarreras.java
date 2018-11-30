@@ -6,11 +6,13 @@
 package Interfaz;
 
 import java.util.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import logica.GestorPrincipal;
 import modelo.Carrera;
+import modelo.CorredorCarrera;
 import org.netbeans.validation.api.builtin.stringvalidation.StringValidators;
 import org.netbeans.validation.api.ui.ValidationGroup;
 
@@ -207,7 +209,7 @@ public class FormularioAltaCarreras extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
+                .addContainerGap(22, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
             .addGroup(layout.createSequentialGroup()
@@ -226,21 +228,42 @@ public class FormularioAltaCarreras extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonAceptarCarrera, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
                     .addComponent(jButtonCancelarCarrera, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(113, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAceptarCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarCarreraActionPerformed
+
         String nombre = jTextFieldNombre.getText();
         String lugar = jTextFieldLugar.getText();
         String id = jTextFieldIdCarrera.getText();
         Date fecha = (Date) jSpinnerFecha.getValue();
         int participantes = Integer.parseInt(jTextFieldNumParticipantes.getText());
-        GestorPrincipal.getInstance().anadirCarrera(nombre, lugar, id, fecha, participantes);
-        JOptionPane.showMessageDialog(this, "Se ha creado una carrera");
-        setVisible(false);
+        if (carrera == null) {
+            if (GestorPrincipal.getInstance().buscarCarreraId(id) == null) {
+                GestorPrincipal.getInstance().anadirCarreraNueva(nombre, lugar, id, fecha, participantes);
+                JOptionPane.showMessageDialog(this, "Se ha creado una carrera");
+                setVisible(false);
+
+            } else {
+                JOptionPane.showMessageDialog(this, "El ID ya existe en la base de datos, modifique la entrada", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } else {
+            GestorPrincipal.getInstance().eleminarCarrera(carrera.getIdentificador());
+            carrera.setNombre(nombre);
+            carrera.setLugar(lugar);
+            carrera.setFecha(fecha);
+            carrera.setIdentificador(id);
+            carrera.setNumParticipantes(participantes);
+            GestorPrincipal.getInstance().anadirCarreraModificada(carrera);
+            JOptionPane.showMessageDialog(this, "Se ha modificado una carrera");
+            setVisible(false);
+
+        }
+
     }//GEN-LAST:event_jButtonAceptarCarreraActionPerformed
 
     private void jButtonCancelarCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarCarreraActionPerformed

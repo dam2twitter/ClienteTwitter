@@ -32,9 +32,8 @@ public class GestorPrincipal {
     private File fileOpcionesConfiguracion;
     private OpcionesConfiguracion opciones;
 
-    private GestorPrincipal() {
+    private GestorPrincipal() {      
         corredores = new TreeMap();
-        timerCopiaDeSeguridad = new Timer();
         File archivoCorredores = new File("corredores.csv");
         fileCarreras = new File("carreras.dat");
         fileOpcionesConfiguracion = new File("opcionesConfiguracion.dat");
@@ -75,7 +74,7 @@ public class GestorPrincipal {
             }
         }
         gestorFicheroCorredores = new GestorCsv(archivoCorredores);
-
+         iniciarTimerTask();
     }
 
     private synchronized static void createInstance() {
@@ -162,8 +161,13 @@ public class GestorPrincipal {
         }
     }
 
-    public void anadirCarrera(String nombre, String lugar, String identificador, Date fecha, int participantes) {
+    public void anadirCarreraNueva(String nombre, String lugar, String identificador, Date fecha, int participantes) {
         Carrera c = new Carrera(nombre, lugar, identificador, fecha, participantes);
+        carreras.put(c.getIdentificador(), c);
+    }
+    
+      public void anadirCarreraModificada(Carrera c) {
+       
         carreras.put(c.getIdentificador(), c);
     }
 
@@ -179,6 +183,9 @@ public class GestorPrincipal {
 
     public Corredor buscarUnCorredorDni(String dni) {
         return corredores.get(dni);
+    }
+    public Carrera buscarCarreraId(String id){
+    return carreras.get(id);
     }
 
     public Corredor eleminarUnCorredor(String dni) {
@@ -202,16 +209,39 @@ public class GestorPrincipal {
 
     public void recibirTiempoCopiaSeguridad(int tiempo) {
         opciones.setTiempoEntreCadaCopiaSeguridad(tiempo);
+       iniciarTimerTask();
+    }
+    
+    public void iniciarTimerTask(){
+    timerCopiaDeSeguridad =new Timer();
+        timerCopiaDeSeguridad.schedule(new TimerTask() {
+            @Override
+            public void run() {
+              grabarArchivoCarreras();
+              grabarColeccionCorredoresAcsv(); 
+                  System.out.println("Se ha hecho una copia de seguridad");
+            }   
+        }, 1000);
+    
     }
 
     public int mandarTiempoCopiaSeguridad() {
         return opciones.getTiempoEntreCadaCopiaSeguridad();
     }
 
+    public void recibirStringLookAndFeel(String look) {
+        opciones.setLookAndFeel(look);
+
+    }
+
+    public String mandarLookAndFeelSeleccionado() {
+        return opciones.getLookAndFeel();
+    }
+
     public List<Corredor> devolverColeccionCorredores() {
         return new ArrayList(corredores.values());
     }
-
-
+    
+  
 
 }

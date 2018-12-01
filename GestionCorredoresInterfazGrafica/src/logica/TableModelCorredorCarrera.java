@@ -5,6 +5,7 @@
  */
 package logica;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import modelo.CorredorCarrera;
@@ -17,6 +18,7 @@ public class TableModelCorredorCarrera extends AbstractTableModel {
 
     private final List<CorredorCarrera> listaCorredor;
     private final String[] columnas = {"Nombre", "Apellidos", "Dorsal", "Tiempo"};
+    private SimpleDateFormat formato = new SimpleDateFormat("mm:ss:SSS");
 
     public TableModelCorredorCarrera(List<CorredorCarrera> listaCorredor) {
         this.listaCorredor = listaCorredor;
@@ -48,7 +50,24 @@ public class TableModelCorredorCarrera extends AbstractTableModel {
             case 2:
                 return listaCorredor.get(filas).getDorsal();
             case 3:
-                return listaCorredor.get(filas).getTiempo();
+
+                if (listaCorredor.get(filas).getTiempo() == null) {
+                    return "";
+                } else if (listaCorredor.get(filas).getTiempo().toString().equals("Thu Jan 01 00:00:00 CET 1970")) {
+                    return "No clasificado";
+                } else {
+                     return formato.format(listaCorredor.get(filas).getTiempo());
+                }
+               
+                
+                
+                /*if (listaCorredor.get(filas).getTiempo() != null) {
+                return formato.format(listaCorredor.get(filas).getTiempo());
+                } else {
+                return "";
+                }*/
+
+        
         }
         return null;
     }

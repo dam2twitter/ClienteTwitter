@@ -5,9 +5,16 @@
  */
 package Interfaz;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
 import javax.swing.JOptionPane;
+import logica.EventoLisenerCrono;
 import logica.TableModelCorredorCarrera;
 import modelo.Carrera;
+import modelo.CorredorCarrera;
+import org.openide.util.Exceptions;
 
 /**
  *
@@ -16,6 +23,8 @@ import modelo.Carrera;
 public class CarreraComenzada extends javax.swing.JDialog {
 
     private Carrera carrera;
+    private String strDateFormat = "mm:ss:SSS";
+    private Date tiempoCorredor;
 
     /**
      * Creates new form CarreraComenzada
@@ -25,7 +34,39 @@ public class CarreraComenzada extends javax.swing.JDialog {
         initComponents();
         this.carrera = carrera;
         jLabelTitulo.setText("Participantes de la carrera " + carrera.getNombre() + " " + carrera.getIdentificador());
+        cronoCarrera1.anadirLisener(new EventoLisenerCrono() {
+            @Override
+            public void ejecutar(String dorsal, String tiempo) {
+                if (dorsal.equals("") || dorsal == null) {
+                    JOptionPane.showMessageDialog(parent, "Introduzca un dorsal", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+
+                    SimpleDateFormat formato = new SimpleDateFormat(strDateFormat);
+                 
+                    Iterator iterator = carrera.getCorredores().iterator();
+                    while (iterator.hasNext()) {
+                        CorredorCarrera corredor = (CorredorCarrera) iterator.next();
+
+                        if (corredor.getDorsal() == Integer.parseInt(dorsal)) {
+
+                            try {
+                                tiempoCorredor = formato.parse(tiempo);
+                                if (corredor.getTiempo() == null) {
+                                    corredor.setTiempo(tiempoCorredor);
+                                }
+                            } catch (ParseException ex) {
+                                Exceptions.printStackTrace(ex);
+                            }
+
+                        }
+
+                    }
+                    rellenarTableCorredoresCarrera();
+                }
+            }
+        });
         rellenarTableCorredoresCarrera();
+
     }
 
     /**
@@ -40,7 +81,6 @@ public class CarreraComenzada extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableCorredoresCarrera = new javax.swing.JTable();
         jButtonCerrar = new javax.swing.JButton();
-        jButtonVolver = new javax.swing.JButton();
         jLabelTitulo = new javax.swing.JLabel();
         cronoCarrera1 = new logica.CronoCarrera();
 
@@ -60,11 +100,9 @@ public class CarreraComenzada extends javax.swing.JDialog {
         jScrollPane1.setViewportView(jTableCorredoresCarrera);
 
         jButtonCerrar.setText(org.openide.util.NbBundle.getMessage(CarreraComenzada.class, "CarreraComenzada.jButtonCerrar.text")); // NOI18N
-
-        jButtonVolver.setText(org.openide.util.NbBundle.getMessage(CarreraComenzada.class, "CarreraComenzada.jButtonVolver.text")); // NOI18N
-        jButtonVolver.addActionListener(new java.awt.event.ActionListener() {
+        jButtonCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonVolverActionPerformed(evt);
+                jButtonCerrarActionPerformed(evt);
             }
         });
 
@@ -75,6 +113,10 @@ public class CarreraComenzada extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(cronoCarrera1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -83,14 +125,8 @@ public class CarreraComenzada extends javax.swing.JDialog {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(cronoCarrera1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,26 +135,40 @@ public class CarreraComenzada extends javax.swing.JDialog {
                 .addComponent(jLabelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(cronoCarrera1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30))
+                .addGap(27, 27, 27)
+                .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
-        if (carrera.isAbierta()) {
-            int respuesta = JOptionPane.showConfirmDialog(this, "¿Esta seguro de volve sin cerrar la carrera?\n Se perderan los tiempos registrados");
-            if (respuesta == JOptionPane.YES_OPTION) {
-                setVisible(false);
+    private void jButtonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarActionPerformed
+
+        try {
+
+            SimpleDateFormat formato = new SimpleDateFormat(strDateFormat);
+
+            tiempoCorredor = formato.parse("00:00:000");
+            JOptionPane.showConfirmDialog(rootPane, "Se va a proceder a cerrar la carrera \n Los corredores sin tiempo no seran clasificados", "Cerrar carrera", JOptionPane.CLOSED_OPTION);
+            carrera.setAbierta(false);
+            Iterator iterator = carrera.getCorredores().iterator();
+
+            while (iterator.hasNext()) {
+                CorredorCarrera corredor = (CorredorCarrera) iterator.next();
+                if (corredor.getTiempo() == null) {
+                    corredor.setTiempo(tiempoCorredor);
+
+                }
             }
+            setVisible(false);
+        } catch (ParseException ex) {
+            Exceptions.printStackTrace(ex);
         }
-    }//GEN-LAST:event_jButtonVolverActionPerformed
+
+    }//GEN-LAST:event_jButtonCerrarActionPerformed
 
     public void rellenarTableCorredoresCarrera() {
         jTableCorredoresCarrera.setModel(new TableModelCorredorCarrera(carrera.getCorredores()));
@@ -128,9 +178,9 @@ public class CarreraComenzada extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private logica.CronoCarrera cronoCarrera1;
     private javax.swing.JButton jButtonCerrar;
-    private javax.swing.JButton jButtonVolver;
     private javax.swing.JLabel jLabelTitulo;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableCorredoresCarrera;
     // End of variables declaration//GEN-END:variables
+
 }

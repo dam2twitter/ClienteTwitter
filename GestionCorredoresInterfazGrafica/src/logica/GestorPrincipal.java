@@ -74,7 +74,8 @@ public class GestorPrincipal {
             }
         }
         gestorFicheroCorredores = new GestorCsv(archivoCorredores);
-         iniciarTimerTask();
+        volcarCsvCorredoresAColeccion();
+       iniciarTimerTask();
     }
 
     private synchronized static void createInstance() {
@@ -213,7 +214,7 @@ public class GestorPrincipal {
     }
     
     public void iniciarTimerTask(){
-    timerCopiaDeSeguridad =new Timer();
+        timerCopiaDeSeguridad =new Timer();
         timerCopiaDeSeguridad.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -221,7 +222,7 @@ public class GestorPrincipal {
               grabarColeccionCorredoresAcsv(); 
                   System.out.println("Se ha hecho una copia de seguridad");
             }   
-        }, 1000);
+        }, 0,(mandarTiempoCopiaSeguridad()*60*1000));
     
     }
 

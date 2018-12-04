@@ -33,13 +33,14 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
      */
     public MainPantallaPrincipalCorredor() {
         cargarLookAndFeel();
+        setResizable(false);
         try {
 
             JFrame.setDefaultLookAndFeelDecorated(true);
             JDialog.setDefaultLookAndFeelDecorated(true);
             UIManager.setLookAndFeel(GestorPrincipal.getInstance().mandarLookAndFeelSeleccionado());
             SwingUtilities.updateComponentTreeUI(this);
-         
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -79,6 +80,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         jButtonCrearCarrera = new javax.swing.JButton();
         jButtonCrearCorredor = new javax.swing.JButton();
         jButtonVerCarreras = new javax.swing.JButton();
+        jButtonVerCorredores = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuPrincipal = new javax.swing.JMenu();
         jMenuItemAltaCorredor = new javax.swing.JMenuItem();
@@ -115,6 +117,13 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         jButtonVerCarreras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonVerCarrerasActionPerformed(evt);
+            }
+        });
+
+        jButtonVerCorredores.setText("Ver corredores");
+        jButtonVerCorredores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVerCorredoresActionPerformed(evt);
             }
         });
 
@@ -169,31 +178,36 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(53, Short.MAX_VALUE)
+                .addGap(35, 35, 35)
                 .addComponent(jButtonCrearCorredor)
                 .addGap(18, 18, 18)
+                .addComponent(jButtonCrearCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonVerCorredores)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonCrearCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonVerCarreras, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(31, 31, 31))
+                    .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonVerCarreras, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(39, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jLabelIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
+                .addGap(64, 64, 64)
+                .addComponent(jLabelIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonCrearCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonCrearCorredor, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonCrearCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonVerCorredores, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonVerCarreras, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         pack();
@@ -233,19 +247,24 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemConfiguracionActionPerformed
 
     private void jButtonCrearCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearCarreraActionPerformed
-      FormularioAltaCarreras formularioCarrera = new FormularioAltaCarreras(this, true);
+        FormularioAltaCarreras formularioCarrera = new FormularioAltaCarreras(this, true);
         formularioCarrera.setVisible(true);
     }//GEN-LAST:event_jButtonCrearCarreraActionPerformed
 
     private void jButtonCrearCorredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearCorredorActionPerformed
-       FormularioAltaCorredor formulario = new FormularioAltaCorredor(this, true);
+        FormularioAltaCorredor formulario = new FormularioAltaCorredor(this, true);
         formulario.setVisible(true);
     }//GEN-LAST:event_jButtonCrearCorredorActionPerformed
 
     private void jButtonVerCarrerasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerCarrerasActionPerformed
-       VisualizadorCarreras visCarreras = new VisualizadorCarreras(this, true);
+        VisualizadorCarreras visCarreras = new VisualizadorCarreras(this, true);
         visCarreras.setVisible(true);
     }//GEN-LAST:event_jButtonVerCarrerasActionPerformed
+
+    private void jButtonVerCorredoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerCorredoresActionPerformed
+        VisualizadorCorredores visCorredores = new VisualizadorCorredores(this, true);
+        visCorredores.setVisible(true);
+    }//GEN-LAST:event_jButtonVerCorredoresActionPerformed
     public void cargarLookAndFeel() {
         UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Platano", "com.jtattoo.plaf.bernstein.BernsteinLookAndFeel"));
         UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Aluminio", "com.jtattoo.plaf.aluminium.AluminiumLookAndFeel"));
@@ -305,6 +324,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     private javax.swing.JButton jButtonCrearCorredor;
     private javax.swing.JButton jButtonSalir;
     private javax.swing.JButton jButtonVerCarreras;
+    private javax.swing.JButton jButtonVerCorredores;
     private javax.swing.JLabel jLabelIcono;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItemAltaCarrera;

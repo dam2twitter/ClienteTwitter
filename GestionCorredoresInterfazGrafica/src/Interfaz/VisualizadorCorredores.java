@@ -26,19 +26,20 @@ public class VisualizadorCorredores extends javax.swing.JDialog {
     public VisualizadorCorredores(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setResizable(false);
         this.rellenarTable();
     }
-    
+
     public void rellenarTable() {
-        
+
         TableModelCorredor tbm = new TableModelCorredor(GestorPrincipal.getInstance().devolverColeccionCorredores());
         jTable1.setModel(tbm);
         TableRowSorter<TableModelCorredor> sorter = new TableRowSorter<>(tbm);
         jTable1.setRowSorter(sorter);
-        List<SortKey>sortkeys=new ArrayList<>();
-        sortkeys.add(new SortKey(0,SortOrder.ASCENDING));
+        List<SortKey> sortkeys = new ArrayList<>();
+        sortkeys.add(new SortKey(0, SortOrder.ASCENDING));
         sorter.setSortKeys(sortkeys);
-        
+
     }
 
     /**
@@ -122,8 +123,8 @@ public class VisualizadorCorredores extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 639, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonEliminarCorredor, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)

@@ -42,7 +42,7 @@ public class CarreraComenzada extends javax.swing.JDialog {
                 } else {
 
                     SimpleDateFormat formato = new SimpleDateFormat(strDateFormat);
-                 
+
                     Iterator iterator = carrera.getCorredores().iterator();
                     while (iterator.hasNext()) {
                         CorredorCarrera corredor = (CorredorCarrera) iterator.next();
@@ -83,6 +83,7 @@ public class CarreraComenzada extends javax.swing.JDialog {
         jButtonCerrar = new javax.swing.JButton();
         jLabelTitulo = new javax.swing.JLabel();
         cronoCarrera1 = new logica.CronoCarrera();
+        jButtonVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -108,6 +109,13 @@ public class CarreraComenzada extends javax.swing.JDialog {
 
         jLabelTitulo.setText(org.openide.util.NbBundle.getMessage(CarreraComenzada.class, "CarreraComenzada.jLabelTitulo.text")); // NOI18N
 
+        jButtonVolver.setText(org.openide.util.NbBundle.getMessage(CarreraComenzada.class, "CarreraComenzada.jButtonVolver.text")); // NOI18N
+        jButtonVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVolverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -125,6 +133,8 @@ public class CarreraComenzada extends javax.swing.JDialog {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
                         .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -138,7 +148,9 @@ public class CarreraComenzada extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
-                .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32))
         );
 
@@ -146,29 +158,44 @@ public class CarreraComenzada extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarActionPerformed
+        int comprobante = JOptionPane.showConfirmDialog(rootPane, "Se va a proceder a cerrar la carrera \n Los corredores sin tiempo no seran clasificados");
+        if (comprobante == 0) {
+            try {
 
-        try {
+                SimpleDateFormat formato = new SimpleDateFormat(strDateFormat);
+                tiempoCorredor = formato.parse("00:00:000");
+                System.out.println(comprobante);
 
-            SimpleDateFormat formato = new SimpleDateFormat(strDateFormat);
-
-            tiempoCorredor = formato.parse("00:00:000");
-            JOptionPane.showConfirmDialog(rootPane, "Se va a proceder a cerrar la carrera \n Los corredores sin tiempo no seran clasificados", "Cerrar carrera", JOptionPane.CLOSED_OPTION);
-            carrera.setAbierta(false);
-            Iterator iterator = carrera.getCorredores().iterator();
-
-            while (iterator.hasNext()) {
-                CorredorCarrera corredor = (CorredorCarrera) iterator.next();
-                if (corredor.getTiempo() == null) {
-                    corredor.setTiempo(tiempoCorredor);
-
+                carrera.setAbierta(false);
+                Iterator iterator = carrera.getCorredores().iterator();
+                while (iterator.hasNext()) {
+                    CorredorCarrera corredor = (CorredorCarrera) iterator.next();
+                    if (corredor.getTiempo() == null) {
+                        corredor.setTiempo(tiempoCorredor);
+                    }
                 }
+                setVisible(false);
+
+            } catch (ParseException ex) {
+                Exceptions.printStackTrace(ex);
             }
-            setVisible(false);
-        } catch (ParseException ex) {
-            Exceptions.printStackTrace(ex);
         }
 
     }//GEN-LAST:event_jButtonCerrarActionPerformed
+
+    private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
+        // TODO add your handling code here:
+        Iterator<CorredorCarrera> iterator = carrera.getCorredores().iterator();
+        while (iterator.hasNext()) {
+            CorredorCarrera corredor = iterator.next();
+            corredor.setTiempo(null);
+
+        }
+
+        setVisible(false);
+
+
+    }//GEN-LAST:event_jButtonVolverActionPerformed
 
     public void rellenarTableCorredoresCarrera() {
         jTableCorredoresCarrera.setModel(new TableModelCorredorCarrera(carrera.getCorredores()));
@@ -178,6 +205,7 @@ public class CarreraComenzada extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private logica.CronoCarrera cronoCarrera1;
     private javax.swing.JButton jButtonCerrar;
+    private javax.swing.JButton jButtonVolver;
     private javax.swing.JLabel jLabelTitulo;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableCorredoresCarrera;

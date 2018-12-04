@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Carrera;
 import modelo.Corredor;
+import modelo.CorredorCarrera;
 import org.openide.util.Exceptions;
 
 /**
@@ -24,7 +25,8 @@ public class GestorPrincipal {
     private static GestorPrincipal gestor = null;
     private Map<String, Corredor> corredores;
     private Map<String, Carrera> carreras;
-    private GestorCsv gestorFicheroCorredores;
+    private GestorCsv gestorFicheroCsv;
+    private GestorCsv gestorCarrera;
     private File fileCarreras;
     private FileInputStream lector;
     private ObjectInputStream obInputS;
@@ -32,7 +34,7 @@ public class GestorPrincipal {
     private File fileOpcionesConfiguracion;
     private OpcionesConfiguracion opciones;
 
-    private GestorPrincipal() {      
+    private GestorPrincipal() {
         corredores = new TreeMap();
         File archivoCorredores = new File("corredores.csv");
         fileCarreras = new File("carreras.dat");
@@ -73,9 +75,9 @@ public class GestorPrincipal {
                 System.out.println("no se puede crear el csv");
             }
         }
-        gestorFicheroCorredores = new GestorCsv(archivoCorredores);
+        gestorFicheroCsv = new GestorCsv(archivoCorredores);
         volcarCsvCorredoresAColeccion();
-       iniciarTimerTask();
+        iniciarTimerTask();
     }
 
     private synchronized static void createInstance() {
@@ -92,9 +94,9 @@ public class GestorPrincipal {
     }
 
     public void volcarCsvCorredoresAColeccion() {
-        gestorFicheroCorredores.abrirLector();
-        List<String> datosCorredoresCsv = gestorFicheroCorredores.guardarLineasCSVEnColeccion();
-        gestorFicheroCorredores.cerrarLector();
+        gestorFicheroCsv.abrirLector();
+        List<String> datosCorredoresCsv = gestorFicheroCsv.guardarLineasCSVEnColeccion();
+        gestorFicheroCsv.cerrarLector();
         Corredor runner = null;
         for (String linea : datosCorredoresCsv) {
             try {
@@ -111,11 +113,21 @@ public class GestorPrincipal {
      * graba en un csv
      */
     public void grabarColeccionCorredoresAcsv() {
-        gestorFicheroCorredores.abrirEscritor();
+        gestorFicheroCsv.abrirEscritor();
         for (Corredor corredores : corredores.values()) {
-            gestorFicheroCorredores.println(destokenizarCorredores(corredores));
+            gestorFicheroCsv.println(destokenizarCorredores(corredores));
         }
-        gestorFicheroCorredores.cerrarEscritor();
+        gestorFicheroCsv.cerrarEscritor();
+    }
+
+    public void grabarCarreraACsv(Carrera carrera) {
+        gestorCarrera = new GestorCsv(new File(carrera.getNombre() + ".csv"));
+        gestorCarrera.abrirEscritor();
+        gestorCarrera.println(destokenizarCarrera(carrera));
+        for (CorredorCarrera corredor : carrera.getCorredores()) {
+            gestorCarrera.println(destokenizarCorredoresCarrera(corredor));
+        }
+        gestorCarrera.cerrarEscritor();
     }
 
     public Corredor tokenizarCorredores(String linea) throws ParseException {
@@ -145,6 +157,18 @@ public class GestorPrincipal {
         return linea;
     }
 
+    public String destokenizarCarrera(Carrera c) {
+        String linea = null;
+        linea = c.getNombre() + ";" + c.getLugar() + ";" + c.getIdentificador() + ";" + (new SimpleDateFormat("dd/mm/yyyy")).format(c.getFecha());
+        return linea;
+    }
+
+    public String destokenizarCorredoresCarrera(CorredorCarrera c) {
+        String linea = null;
+        linea = c.getCorredor().getNombre() + ";" + c.getCorredor().getApellidos() + ";" + c.getDorsal() + ";" + c.getTiempo();
+        return linea;
+    }
+
     /**
      * Añade un corredor a una coleccion
      *
@@ -166,9 +190,9 @@ public class GestorPrincipal {
         Carrera c = new Carrera(nombre, lugar, identificador, fecha, participantes);
         carreras.put(c.getIdentificador(), c);
     }
-    
-      public void anadirCarreraModificada(Carrera c) {
-       
+
+    public void anadirCarreraModificada(Carrera c) {
+
         carreras.put(c.getIdentificador(), c);
     }
 
@@ -185,8 +209,9 @@ public class GestorPrincipal {
     public Corredor buscarUnCorredorDni(String dni) {
         return corredores.get(dni);
     }
-    public Carrera buscarCarreraId(String id){
-    return carreras.get(id);
+
+    public Carrera buscarCarreraId(String id) {
+        return carreras.get(id);
     }
 
     public Corredor eleminarUnCorredor(String dni) {
@@ -210,20 +235,19 @@ public class GestorPrincipal {
 
     public void recibirTiempoCopiaSeguridad(int tiempo) {
         opciones.setTiempoEntreCadaCopiaSeguridad(tiempo);
-       iniciarTimerTask();
+        iniciarTimerTask();
     }
-    
-    public void iniciarTimerTask(){
-        timerCopiaDeSeguridad =new Timer();
+
+    public void iniciarTimerTask() {
+        timerCopiaDeSeguridad = new Timer();
         timerCopiaDeSeguridad.schedule(new TimerTask() {
             @Override
             public void run() {
-              grabarArchivoCarreras();
-              grabarColeccionCorredoresAcsv(); 
-                  System.out.println("Se ha hecho una copia de seguridad");
-            }   
-        }, 0,(mandarTiempoCopiaSeguridad()*60*1000));
-    
+                grabarArchivoCarreras();
+                grabarColeccionCorredoresAcsv();
+            }
+        }, 0, (mandarTiempoCopiaSeguridad() * 60 * 1000));
+
     }
 
     public int mandarTiempoCopiaSeguridad() {
@@ -242,7 +266,5 @@ public class GestorPrincipal {
     public List<Corredor> devolverColeccionCorredores() {
         return new ArrayList(corredores.values());
     }
-    
-  
 
 }

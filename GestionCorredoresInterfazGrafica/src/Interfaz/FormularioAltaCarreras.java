@@ -32,6 +32,7 @@ public class FormularioAltaCarreras extends javax.swing.JDialog {
         super(parent, modal);
         pantallaPrincipal = (MainPantallaPrincipalCorredor) parent;
         initComponents();
+         setResizable(false);
         jButtonAceptarCarrera.setEnabled(false);
         validador();
 

@@ -29,6 +29,7 @@ public class FormularioAltaCorredor extends javax.swing.JDialog {
     public FormularioAltaCorredor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+         setResizable(false);
         btAceptarCrearCorredor.setEnabled(false);
         GestorPrincipal.getInstance().volcarCsvCorredoresAColeccion();
         validador();

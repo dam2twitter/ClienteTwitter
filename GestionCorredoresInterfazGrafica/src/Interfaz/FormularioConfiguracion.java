@@ -24,15 +24,16 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
      * Creates new form FormularioConfiguracion
      */
     public FormularioConfiguracion(java.awt.Frame parent, boolean modal) {
-        
+
         super(parent, modal);
         initComponents();
+        setResizable(false);
         jLabelTiempoEntreCopia.setText("La copia se realiza cada " + GestorPrincipal.getInstance().mandarTiempoCopiaSeguridad() + " minutos");
         DefaultComboBoxModel dcm = new DefaultComboBoxModel();
         for (UIManager.LookAndFeelInfo lfi : UIManager.getInstalledLookAndFeels()) {
             dcm.addElement(lfi.getName());
         }
-        
+
         jComboBox1.setModel(dcm);
         jSpinnerTiempoCopia.addChangeListener(new ChangeListener() {
             @Override
@@ -41,7 +42,7 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
                 jLabelTiempoEntreCopia.setText("La copia se realiza cada " + GestorPrincipal.getInstance().mandarTiempoCopiaSeguridad() + " minutos");
             }
         });
-        
+
     }
 
     /**
@@ -131,16 +132,16 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         if (jComboBox1.getSelectedIndex() > -1) {
             try {
-                
+
                 UIManager.setLookAndFeel(UIManager.getInstalledLookAndFeels()[jComboBox1.getSelectedIndex()].getClassName());
-                String look=UIManager.getInstalledLookAndFeels()[jComboBox1.getSelectedIndex()].getClassName();
+                String look = UIManager.getInstalledLookAndFeels()[jComboBox1.getSelectedIndex()].getClassName();
                 GestorPrincipal.getInstance().recibirStringLookAndFeel(look);
                 SwingUtilities.updateComponentTreeUI(getParent());
                 SwingUtilities.updateComponentTreeUI(this);
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
                 Exceptions.printStackTrace(ex);
             }
-            
+
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 

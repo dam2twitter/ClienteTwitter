@@ -5,6 +5,10 @@
  */
 package Interfaz;
 
+import java.io.File;
+import java.net.URL;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
 import javax.swing.JOptionPane;
 import logica.GestorPrincipal;
 import logica.TableModelCarrera;
@@ -33,6 +37,7 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
         setResizable(false);
         rellenarTable();
         rellenarTableDisponibles();
+        ponlaAyuda();
 
     }
 
@@ -77,6 +82,7 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
         jButtonEliminarCarrera1 = new javax.swing.JButton();
         jButtonImprimirCarrera = new javax.swing.JButton();
         jButtonComenzarCarrera = new javax.swing.JButton();
+        jButtonAyuda = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -186,6 +192,13 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
             }
         });
 
+        jButtonAyuda.setText("Ayuda");
+        jButtonAyuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAyudaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -211,9 +224,12 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButtonVolver, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonEliminarCorredor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonAyuda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(728, 728, 728)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButtonVolver, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonEliminarCorredor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -242,7 +258,9 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jButtonEliminarCorredor, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAyuda, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -271,7 +289,7 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
             carrera = GestorPrincipal.getInstance().devolverColeccionCarreras().get(filaCarreraSeleccionada);
         }
 
-        jButtonEliminarCarrera1.setEnabled(carrera.isAbierta());
+    
         jButtonAnadirCorredor.setEnabled(carrera.isAbierta());
         jButtonImprimirCarrera.setEnabled(!carrera.isAbierta());
         jButtonEliminarCorredor.setEnabled(carrera.isAbierta());
@@ -398,10 +416,37 @@ public class VisualizadorCarreras extends javax.swing.JDialog {
         }
         rellenarTableCorredoresCarrera();
     }//GEN-LAST:event_jButtonComenzarCarreraActionPerformed
+ private void ponlaAyuda() {
+          try 
+        {
+            // Carga el fichero de ayuda
+            File fichero = new File("help"+File.separator+"help_set.hs");
+            URL hsURL = fichero.toURI().toURL();
+
+            // Crea el HelpSet y el HelpBroker
+            HelpSet helpset = new HelpSet(getClass().getClassLoader(), hsURL);
+            HelpBroker hb = helpset.createHelpBroker();
+
+            // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
+            // principal y secundaria.
+            hb.enableHelpOnButton(jButtonAyuda, "gestionar_carreras", helpset);
+            hb.enableHelpKey(getRootPane(),"gestionar_carreras",helpset);
+          
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+        
+    }
+    private void jButtonAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAyudaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonAyudaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAnadirCorredor;
+    private javax.swing.JButton jButtonAyuda;
     private javax.swing.JButton jButtonComenzarCarrera;
     private javax.swing.JButton jButtonEliminarCarrera1;
     private javax.swing.JButton jButtonEliminarCorredor;

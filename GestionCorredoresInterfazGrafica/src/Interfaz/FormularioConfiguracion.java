@@ -5,6 +5,10 @@
  */
 package Interfaz;
 
+import java.io.File;
+import java.net.URL;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -27,6 +31,7 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
 
         super(parent, modal);
         initComponents();
+        ponlaAyuda();
         setResizable(false);
         jLabelTiempoEntreCopia.setText("La copia se realiza cada " + GestorPrincipal.getInstance().mandarTiempoCopiaSeguridad() + " minutos");
         DefaultComboBoxModel dcm = new DefaultComboBoxModel();
@@ -60,6 +65,7 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jSpinnerTiempoCopia = new javax.swing.JSpinner();
         jLabelTiempoEntreCopia = new javax.swing.JLabel();
+        jButtonAyuda = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -85,6 +91,13 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
 
         jLabelTiempoEntreCopia.setText(org.openide.util.NbBundle.getMessage(FormularioConfiguracion.class, "FormularioConfiguracion.jLabelTiempoEntreCopia.text")); // NOI18N
 
+        jButtonAyuda.setText(org.openide.util.NbBundle.getMessage(FormularioConfiguracion.class, "FormularioConfiguracion.jButtonAyuda.text")); // NOI18N
+        jButtonAyuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAyudaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -93,7 +106,9 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonAyuda, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(84, 84, 84)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -116,7 +131,9 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
                         .addGap(92, 92, 92)
                         .addComponent(jSpinnerTiempoCopia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(65, 65, 65)
-                        .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonAyuda, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(67, 67, 67)
@@ -149,8 +166,35 @@ public class FormularioConfiguracion extends javax.swing.JDialog {
         setVisible(false);
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
+    private void jButtonAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAyudaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonAyudaActionPerformed
 
+ private void ponlaAyuda() {
+          try 
+        {
+            // Carga el fichero de ayuda
+            File fichero = new File("help"+File.separator+"help_set.hs");
+            URL hsURL = fichero.toURI().toURL();
+
+            // Crea el HelpSet y el HelpBroker
+            HelpSet helpset = new HelpSet(getClass().getClassLoader(), hsURL);
+            HelpBroker hb = helpset.createHelpBroker();
+
+            // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
+            // principal y secundaria.
+            hb.enableHelpOnButton(jButtonAyuda, "pantallaPreferencias", helpset);
+            hb.enableHelpKey(getRootPane(),"pantallaPreferencias",helpset);
+          
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+        
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAyuda;
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;

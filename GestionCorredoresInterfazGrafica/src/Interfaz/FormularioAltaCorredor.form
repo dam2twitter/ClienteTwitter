@@ -56,7 +56,8 @@
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" attributes="0">
-                                  <EmptySpace min="-2" pref="524" max="-2" attributes="0"/>
+                                  <Component id="jButtonAyuda" pref="132" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="392" max="-2" attributes="0"/>
                                   <Component id="btAceptarCrearCorredor" pref="132" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                                   <Component id="Volver" pref="132" max="32767" attributes="0"/>
@@ -134,6 +135,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="Volver" alignment="3" min="-2" pref="43" max="-2" attributes="0"/>
                       <Component id="btAceptarCrearCorredor" alignment="3" min="-2" pref="43" max="-2" attributes="0"/>
+                      <Component id="jButtonAyuda" alignment="3" min="-2" pref="43" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
@@ -248,6 +250,14 @@
           </Events>
         </Component>
         <Component class="org.netbeans.validation.api.ui.swing.ValidationPanel" name="validationPanel">
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonAyuda">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Ayuda"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAyudaActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

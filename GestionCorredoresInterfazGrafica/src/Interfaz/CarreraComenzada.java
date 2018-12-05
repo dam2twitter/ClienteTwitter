@@ -5,10 +5,14 @@
  */
 package Interfaz;
 
+import java.io.File;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
 import javax.swing.JOptionPane;
 import logica.EventoLisenerCrono;
 import logica.TableModelCorredorCarrera;
@@ -32,6 +36,7 @@ public class CarreraComenzada extends javax.swing.JDialog {
     public CarreraComenzada(VisualizadorCarreras parent, boolean modal, Carrera carrera) {
         super(parent, modal);
         initComponents();
+        ponlaAyuda();
         this.carrera = carrera;
         jLabelTitulo.setText("Participantes de la carrera " + carrera.getNombre() + " " + carrera.getIdentificador());
         cronoCarrera1.anadirLisener(new EventoLisenerCrono() {
@@ -84,6 +89,7 @@ public class CarreraComenzada extends javax.swing.JDialog {
         jLabelTitulo = new javax.swing.JLabel();
         cronoCarrera1 = new logica.CronoCarrera();
         jButtonVolver = new javax.swing.JButton();
+        jButtonAyuda = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -116,6 +122,13 @@ public class CarreraComenzada extends javax.swing.JDialog {
             }
         });
 
+        jButtonAyuda.setText(org.openide.util.NbBundle.getMessage(CarreraComenzada.class, "CarreraComenzada.jButtonAyuda.text")); // NOI18N
+        jButtonAyuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAyudaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -132,7 +145,9 @@ public class CarreraComenzada extends javax.swing.JDialog {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(27, 27, 27)
+                        .addComponent(jButtonAyuda, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(42, 42, 42)
                         .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -150,7 +165,8 @@ public class CarreraComenzada extends javax.swing.JDialog {
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAyuda, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32))
         );
 
@@ -196,6 +212,28 @@ public class CarreraComenzada extends javax.swing.JDialog {
 
 
     }//GEN-LAST:event_jButtonVolverActionPerformed
+    private void ponlaAyuda() {
+        try {
+            // Carga el fichero de ayuda
+            File fichero = new File("help" + File.separator + "help_set.hs");
+            URL hsURL = fichero.toURI().toURL();
+
+            // Crea el HelpSet y el HelpBroker
+            HelpSet helpset = new HelpSet(getClass().getClassLoader(), hsURL);
+            HelpBroker hb = helpset.createHelpBroker();
+
+            // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
+            // principal y secundaria.
+            hb.enableHelpOnButton(jButtonAyuda, "comenzar_carrera", helpset);
+            hb.enableHelpKey(getRootPane(), "comenzar_carrera", helpset);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void jButtonAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAyudaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonAyudaActionPerformed
 
     public void rellenarTableCorredoresCarrera() {
         jTableCorredoresCarrera.setModel(new TableModelCorredorCarrera(carrera.getCorredores()));
@@ -204,6 +242,7 @@ public class CarreraComenzada extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private logica.CronoCarrera cronoCarrera1;
+    private javax.swing.JButton jButtonAyuda;
     private javax.swing.JButton jButtonCerrar;
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JLabel jLabelTitulo;

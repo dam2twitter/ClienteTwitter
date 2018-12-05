@@ -10,6 +10,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -45,6 +48,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
             e.printStackTrace();
         }
         initComponents();
+        ponlaAyuda();
         setLocationRelativeTo(null);
         setTitle("Gestor corredores");
         setIconImage(new ImageIcon(getClass().getResource(RUTA_LOGO)).getImage());
@@ -88,6 +92,8 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
         jMenuItemVisualCorredor = new javax.swing.JMenuItem();
         jMenuVerCarrera = new javax.swing.JMenuItem();
         jMenuItemConfiguracion = new javax.swing.JMenuItem();
+        jMenuAyuda = new javax.swing.JMenu();
+        jMenuItemMostrarAyuda = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -171,6 +177,13 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuPrincipal);
 
+        jMenuAyuda.setText("Ayuda");
+
+        jMenuItemMostrarAyuda.setText("Mostrar Ayuda");
+        jMenuAyuda.add(jMenuItemMostrarAyuda);
+
+        jMenuBar1.add(jMenuAyuda);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -188,7 +201,7 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonVerCarreras, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabelIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -326,12 +339,41 @@ public class MainPantallaPrincipalCorredor extends javax.swing.JFrame {
     private javax.swing.JButton jButtonVerCarreras;
     private javax.swing.JButton jButtonVerCorredores;
     private javax.swing.JLabel jLabelIcono;
+    private javax.swing.JMenu jMenuAyuda;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItemAltaCarrera;
     private javax.swing.JMenuItem jMenuItemAltaCorredor;
     private javax.swing.JMenuItem jMenuItemConfiguracion;
+    private javax.swing.JMenuItem jMenuItemMostrarAyuda;
     private javax.swing.JMenuItem jMenuItemVisualCorredor;
     private javax.swing.JMenu jMenuPrincipal;
     private javax.swing.JMenuItem jMenuVerCarrera;
     // End of variables declaration//GEN-END:variables
+
+    private void ponlaAyuda() {
+          try 
+        {
+            // Carga el fichero de ayuda
+            File fichero = new File("help"+File.separator+"help_set.hs");
+            URL hsURL = fichero.toURI().toURL();
+
+            // Crea el HelpSet y el HelpBroker
+            HelpSet helpset = new HelpSet(getClass().getClassLoader(), hsURL);
+            HelpBroker hb = helpset.createHelpBroker();
+
+            // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
+            // principal y secundaria.
+            hb.enableHelpOnButton(jMenuItemMostrarAyuda, "principal", helpset);
+            hb.enableHelpKey(getRootPane(),"principal",helpset);
+           /* hb.enableHelpKey(jButton1,"ventana_principal",helpset);
+            hb.enableHelpKey(jButton2,"ventana_secundaria",helpset);
+            hb.enableHelpOnButton(jButton1, "ventana_principal", helpset);
+            hb.enableHelpOnButton(jButton2, "ventana_secundaria", helpset);*/
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+        
+    }
 }

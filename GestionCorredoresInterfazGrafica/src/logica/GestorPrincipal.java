@@ -124,6 +124,8 @@ public class GestorPrincipal {
         gestorCarrera = new GestorCsv(new File(carrera.getNombre() + ".csv"));
         gestorCarrera.abrirEscritor();
         gestorCarrera.println(destokenizarCarrera(carrera));
+        gestorCarrera.println(destokenizarFechaCarrera(carrera));
+        
         for (CorredorCarrera corredor : carrera.getCorredores()) {
             gestorCarrera.println(destokenizarCorredoresCarrera(corredor));
         }
@@ -159,13 +161,19 @@ public class GestorPrincipal {
 
     public String destokenizarCarrera(Carrera c) {
         String linea = null;
-        linea = c.getNombre() + ";" + c.getLugar() + ";" + c.getIdentificador() + ";" + (new SimpleDateFormat("dd/mm/yyyy")).format(c.getFecha());
+        linea = c.getNombre() + ";" + c.getLugar() + ";" + c.getIdentificador() + ";";
+        return linea;
+    }
+
+    public String destokenizarFechaCarrera(Carrera c) {
+        String linea = null;
+        linea = (new SimpleDateFormat("dd/mm/yyyy")).format(c.getFecha());
         return linea;
     }
 
     public String destokenizarCorredoresCarrera(CorredorCarrera c) {
         String linea = null;
-        linea = c.getCorredor().getNombre() + ";" + c.getCorredor().getApellidos() + ";" + c.getDorsal() + ";" + c.getTiempo();
+        linea = c.getDorsal() + " " + c.getTiempo()+" "+ c.getCorredor().getNombre() + " " + c.getCorredor().getApellidos();
         return linea;
     }
 

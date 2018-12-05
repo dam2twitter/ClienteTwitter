@@ -1,0 +1,10 @@
+<index version="1.0">
+   <indexitem  text="Ayuda Principal" target="principal">
+    <indexitem  text="Crear carrera" target="crear_carrera"/>
+     <indexitem  text="Crear corredor" target="crear_corredor"/>
+     <indexitem  text="Comenzar carrera" target="comenzar_carrera"/>
+     <indexitem  text="Gestionar corredores" target="gestionar_corredores"/>
+     <indexitem  text="Gestionar carreras" target="gestionar_carreras"/>
+      <indexitem  text="Preferencias" target="pantallaPreferencias"/>
+   </tocitem>
+</index>

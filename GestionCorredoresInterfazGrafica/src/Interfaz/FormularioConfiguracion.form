@@ -27,7 +27,10 @@
               <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="jLabel1" min="-2" pref="318" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel1" min="-2" pref="318" max="-2" attributes="0"/>
+                          <Component id="jButtonAyuda" alignment="0" min="-2" pref="154" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="jButtonVolver" min="-2" pref="154" max="-2" attributes="0"/>
@@ -57,7 +60,10 @@
                       <EmptySpace min="92" pref="92" max="-2" attributes="0"/>
                       <Component id="jSpinnerTiempoCopia" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
-                      <Component id="jButtonVolver" min="-2" pref="63" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jButtonVolver" alignment="3" min="-2" pref="63" max="-2" attributes="0"/>
+                          <Component id="jButtonAyuda" alignment="3" min="-2" pref="63" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="jLabel1" min="-2" pref="22" max="-2" attributes="0"/>
@@ -128,6 +134,16 @@
           <ResourceString bundle="Interfaz/Bundle.properties" key="FormularioConfiguracion.jLabelTiempoEntreCopia.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonAyuda">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="Interfaz/Bundle.properties" key="FormularioConfiguracion.jButtonAyuda.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAyudaActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

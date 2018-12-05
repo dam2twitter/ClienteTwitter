@@ -1,0 +1,10 @@
+<toc version="1.0">
+   <tocitem text="Ayuda Principal" target="principal">
+      <tocitem text="Crear carrera" target="crear_carrera"/>
+      <tocitem text="Crear corredor" target="crear_corredor"/>
+      <tocitem text="Comenzar carrera" target="comenzar_carrera"/>
+      <tocitem text="Gestionar corredores" target="gestionar_corredores"/>
+      <tocitem text="Gestionar carreras" target="gestionar_carreras"/>
+      <tocitem text="Preferencias" target="pantallaPreferencias"/>
+   </tocitem>
+</toc>

@@ -125,8 +125,20 @@ public class GestorPrincipal {
         gestorCarrera.abrirEscritor();
         gestorCarrera.println(destokenizarCarrera(carrera));
         gestorCarrera.println(destokenizarFechaCarrera(carrera));
-        
+
+        ArrayList<CorredorCarrera> corredorCarreraOrdenada = new ArrayList();
         for (CorredorCarrera corredor : carrera.getCorredores()) {
+
+            corredorCarreraOrdenada.add(corredor);
+        }
+        Collections.sort(corredorCarreraOrdenada, new Comparator<CorredorCarrera>() {
+            @Override
+            public int compare(CorredorCarrera o1, CorredorCarrera o2) {
+                return o1.getTiempo().compareTo(o2.getTiempo());
+            }
+        }
+        );
+        for (CorredorCarrera corredor : corredorCarreraOrdenada) {
             gestorCarrera.println(destokenizarCorredoresCarrera(corredor));
         }
         gestorCarrera.cerrarEscritor();
@@ -167,13 +179,14 @@ public class GestorPrincipal {
 
     public String destokenizarFechaCarrera(Carrera c) {
         String linea = null;
-        linea = (new SimpleDateFormat("dd/mm/yyyy")).format(c.getFecha());
+        linea = (new SimpleDateFormat("dd/MM/yyyy")).format(c.getFecha());
         return linea;
     }
 
     public String destokenizarCorredoresCarrera(CorredorCarrera c) {
+
         String linea = null;
-        linea = c.getDorsal() + " " + c.getTiempo()+" "+ c.getCorredor().getNombre() + " " + c.getCorredor().getApellidos();
+        linea = c.getDorsal() + " " + (new SimpleDateFormat("mm:ss:SSS")).format(c.getTiempo()) + " " + c.getCorredor().getNombre() + " " + c.getCorredor().getApellidos();
         return linea;
     }
 

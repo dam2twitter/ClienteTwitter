@@ -1,9 +1,0 @@
-<map version="1.0">
-   <mapID target="comenzar_carrera" url="html/comenzarCarrera.html" />
-   <mapID target="crear_carrera" url="html/crearCarrera.html" />
-   <mapID target="crear_corredor" url="html/crearCorredor.html" />
-   <mapID target="gestionar_carreras" url="html/gestionarCarreras.html" />
-   <mapID target="gestionar_corredores" url="html/gestionarCorredores.html" />
-   <mapID target="principal" url="html/main.html" />
-   <mapID target="pantallaPreferencias" url="html/pantallaPreferencias.html" />
-</map>

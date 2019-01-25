@@ -11,4 +11,15 @@ package logica;
  */
 public class EncriptableFactory {
     
+    public static Encriptable getEncriptableAES(){
+    return new EncriptableAES();
+    
+    
+    }
+    
+    public static Encriptable getEncriptableDelCesar(){
+    return new EncriptableDelCesar();
+    
+    }
+    
 }

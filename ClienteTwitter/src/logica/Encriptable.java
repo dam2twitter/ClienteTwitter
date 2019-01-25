@@ -11,4 +11,8 @@ package logica;
  */
 public interface Encriptable {
     
+    public String encriptar(String stringAEncriptar);
+    
+    
+    public String desEncriptar(String strigADesencriptar);
 }

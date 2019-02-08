@@ -61,7 +61,7 @@ public class LoginPrincipal extends javax.swing.JFrame {
         });
 
         jLabelIcono.setBackground(new java.awt.Color(255, 255, 255));
-        jLabelIcono.setIcon(new javax.swing.ImageIcon("C:\\Users\\Alvaro Perez\\Downloads\\Twitter_Logo_Blue.png")); // NOI18N
+        jLabelIcono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Twitter_Logo_Blue.png"))); // NOI18N
 
         jCheckBoxRecordar.setBackground(new java.awt.Color(255, 255, 255));
         jCheckBoxRecordar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N

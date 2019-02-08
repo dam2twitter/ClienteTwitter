@@ -6,6 +6,7 @@
         <group>
             <file>file:/C:/Users/Roge/Documents/Git/ClienteTwitter/ClienteTwitter/src/logica/LogicaNegocio.java</file>
         </group>
+<<<<<<< HEAD
         <group name="Twitter">
             <file>file:/C:/Users/Alvaro%20Perez/Documents/Twitter/ClienteTwitter/ClienteTwitter/src/logica/Colores.java</file>
             <file>file:/C:/Users/Alvaro%20Perez/Documents/Twitter/ClienteTwitter/ClienteTwitter/src/logica/LoginUsuario.java</file>
@@ -14,6 +15,19 @@
             <file>file:/C:/Users/Alvaro%20Perez/Documents/Twitter/ClienteTwitter/ClienteTwitter/src/logica/LogicaNegocio.java</file>
             <file>file:/C:/Users/Alvaro%20Perez/Documents/Twitter/ClienteTwitter/ClienteTwitter/src/vista/Login.java</file>
             <file>file:/C:/Users/Alvaro%20Perez/Documents/Twitter/ClienteTwitter/ClienteTwitter/src/vista/LoginPrincipal.java</file>
+=======
+        <group name="DI">
+            <file>file:/home/daniel/Documentos/proyecto%20Twiteer%20bien/ClienteTwitter/ClienteTwitter/src/Componentes/BarraBusqueda.java</file>
+            <file>file:/home/daniel/Documentos/proyecto%20Twiteer%20bien/ClienteTwitter/ClienteTwitter/src/utils/componenteFotoRedonda/FotoRedonda.java</file>
+            <file>file:/home/daniel/Documentos/proyecto%20Twiteer%20bien/ClienteTwitter/ClienteTwitter/src/vista/PantallaPrincipal.java</file>
+            <file>file:/home/daniel/Documentos/proyecto%20Twiteer%20bien/ClienteTwitter/ClienteTwitter/src/jlabelcircular/CLabelBeanInfo.java</file>
+            <file>file:/home/daniel/Documentos/proyecto%20Twiteer%20bien/ClienteTwitter/ClienteTwitter/src/utils/componenteFotoRedonda/CircleBorder.java</file>
+            <file>file:/home/daniel/Documentos/proyecto%20Twiteer%20bien/ClienteTwitter/ClienteTwitter/src/vista/Login.java</file>
+            <file>file:/home/daniel/Documentos/proyecto%20Twiteer%20bien/ClienteTwitter/ClienteTwitter/src/vista/Pin.java</file>
+            <file>file:/home/daniel/Documentos/proyecto%20Twiteer%20bien/ClienteTwitter/ClienteTwitter/src/jlabelcircular/CLabel.java</file>
+            <file>file:/home/daniel/Documentos/proyecto%20Twiteer%20bien/ClienteTwitter/ClienteTwitter/src/jlabelcircular/CLabelListener.java</file>
+            <file>file:/home/daniel/Documentos/proyecto%20Twiteer%20bien/ClienteTwitter/ClienteTwitter/src/jlabelcircular/CircleBorder.java</file>
+>>>>>>> 330098f37bf3f75a86fbe95737fb597d2567561a
         </group>
     </open-files>
 </project-private>

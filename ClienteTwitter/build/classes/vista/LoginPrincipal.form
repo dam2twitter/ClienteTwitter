@@ -125,7 +125,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\Alvaro Perez\Downloads\Twitter_Logo_Blue.png"/>
+              <Image iconType="3" name="/img/Twitter_Logo_Blue.png"/>
             </Property>
           </Properties>
         </Component>

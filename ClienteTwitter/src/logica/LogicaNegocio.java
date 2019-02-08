@@ -10,8 +10,6 @@ public class LogicaNegocio {
    private SesionUsuario sesionUsuario;
    File ficheroDatos;
 
-    private LogicaNegocio() {
-    }
 
     public static LogicaNegocio getInstance() {
         if (INSTANCE == null) {
@@ -19,6 +17,12 @@ public class LogicaNegocio {
         }
         return INSTANCE;
     }
+
+    public LoginUsuario getLoginUsuario() {
+        return loginUsuario;
+    }
+
+   
     
     
 }

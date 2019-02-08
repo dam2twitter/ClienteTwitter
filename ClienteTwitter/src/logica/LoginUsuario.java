@@ -10,5 +10,21 @@ package logica;
  * @author Roge
  */
 public class LoginUsuario {
-    
+
+    private static LoginUsuario INSTANCE;
+
+    public static LoginUsuario getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new LoginUsuario();
+        }
+        return INSTANCE;
+    }
+
+    public boolean buscarUsuarioRegistrado(String usuario, String contraseña) {
+        return true;
+    }
+
+    public String hola() {
+        return "hola";
+    }
 }

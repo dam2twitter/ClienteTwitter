@@ -6,5 +6,14 @@
         <group>
             <file>file:/C:/Users/Roge/Documents/Git/ClienteTwitter/ClienteTwitter/src/logica/LogicaNegocio.java</file>
         </group>
+        <group name="Twitter">
+            <file>file:/C:/Users/Alvaro%20Perez/Documents/Twitter/ClienteTwitter/ClienteTwitter/src/logica/Colores.java</file>
+            <file>file:/C:/Users/Alvaro%20Perez/Documents/Twitter/ClienteTwitter/ClienteTwitter/src/logica/LoginUsuario.java</file>
+            <file>file:/C:/Users/Alvaro%20Perez/Documents/Twitter/ClienteTwitter/ClienteTwitter/src/logica/ConfiguracionApp.java</file>
+            <file>file:/C:/Users/Alvaro%20Perez/Documents/Twitter/ClienteTwitter/ClienteTwitter/src/logica/Encriptable.java</file>
+            <file>file:/C:/Users/Alvaro%20Perez/Documents/Twitter/ClienteTwitter/ClienteTwitter/src/logica/LogicaNegocio.java</file>
+            <file>file:/C:/Users/Alvaro%20Perez/Documents/Twitter/ClienteTwitter/ClienteTwitter/src/vista/Login.java</file>
+            <file>file:/C:/Users/Alvaro%20Perez/Documents/Twitter/ClienteTwitter/ClienteTwitter/src/vista/LoginPrincipal.java</file>
+        </group>
     </open-files>
 </project-private>

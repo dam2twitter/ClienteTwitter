@@ -13,11 +13,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import logica.LogicaNegocio;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
+import twitter4j.conf.ConfigurationBuilder;
 
 /**
  *
@@ -26,10 +29,14 @@ import twitter4j.auth.RequestToken;
 public class Registro extends javax.swing.JDialog {
 
     private URI uri;
-    private int pin;
+    private String pin;
     private Twitter twitterAdministrador;
     private String authorizationURL;
     private RequestToken requestToken;
+    private String correo;
+    private String contrasena;
+    private AccessToken accessTokenCliente;
+    private Twitter usuario;
 
     /**
      * Creates new form Pin
@@ -52,29 +59,45 @@ public class Registro extends javax.swing.JDialog {
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    private void lisenerJtextPin(){
-    jTextFieldPin.addKeyListener(new KeyListener() {
-        @Override
-        public void keyTyped(KeyEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
 
-        @Override
-        public void keyPressed(KeyEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
+    private void lisenerJtextPin() {
+        jTextFieldPin.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
 
-        @Override
-        public void keyReleased(KeyEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-    });
-    
-    
-    
-    
-    
+            @Override
+            public void keyPressed(KeyEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+
     }
+
+    public void recogerDatos() {
+        try {
+          
+            pin = jTextFieldPin.getText();
+
+            accessTokenCliente = twitterAdministrador.getOAuthAccessToken(requestToken, pin);
+            usuario = TwitterFactory.getSingleton();
+            usuario.setOAuthAccessToken(accessTokenCliente);
+            
+            
+            
+
+        } catch (TwitterException ex) {
+            JOptionPane.showMessageDialog(this, "El pin no es correcto");
+        }
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -92,7 +115,7 @@ public class Registro extends javax.swing.JDialog {
         jLabelPin1 = new javax.swing.JLabel();
         jTextFieldCorreo = new javax.swing.JTextField();
         jLabelPin2 = new javax.swing.JLabel();
-        jTextFieldContasena = new javax.swing.JTextField();
+        jPasswordField = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(0, 51, 153));
@@ -126,14 +149,14 @@ public class Registro extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(55, 55, 55)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPasswordField, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
                     .addComponent(fotoRedonda1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabelPin1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabelPin, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jTextFieldCorreo)
                         .addComponent(jLabelPin2, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextFieldContasena)
                         .addComponent(jTextFieldPin)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jButtonRecargar, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -152,9 +175,9 @@ public class Registro extends javax.swing.JDialog {
                 .addComponent(jTextFieldCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(jLabelPin2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextFieldContasena, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addGap(18, 18, 18)
+                .addComponent(jPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabelPin1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jTextFieldPin, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -169,8 +192,7 @@ public class Registro extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
-        // TODO add your handling code here:
-        pin = Integer.getInteger(jTextFieldPin.getText());
+        recogerDatos();
 
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
@@ -181,7 +203,7 @@ public class Registro extends javax.swing.JDialog {
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonRecargarActionPerformed
-   
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private utils.componenteFotoRedonda.FotoRedonda fotoRedonda1;
@@ -190,7 +212,7 @@ public class Registro extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelPin;
     private javax.swing.JLabel jLabelPin1;
     private javax.swing.JLabel jLabelPin2;
-    private javax.swing.JTextField jTextFieldContasena;
+    private javax.swing.JPasswordField jPasswordField;
     private javax.swing.JTextField jTextFieldCorreo;
     private javax.swing.JTextField jTextFieldPin;
     // End of variables declaration//GEN-END:variables

@@ -134,17 +134,17 @@ public class Login extends javax.swing.JFrame {
         Twitter twitter = TwitterFactory.getSingleton();
 
 
-        try {
-            User verifyCredentials = twitter.verifyCredentials();
-            
-            
-            
-        } catch (TwitterException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            User verifyCredentials = twitter.verifyCredentials();
+//            
+//            
+//            
+//        } catch (TwitterException ex) {
+//            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         
         PantallaPrincipal pantallaPrincipal = new PantallaPrincipal(this, true);
-    pantallaPrincipal.setVisible(true);
+        pantallaPrincipal.setVisible(true);
     }//GEN-LAST:event_jButtonEntrarActionPerformed
 
     private void jPasswordFieldContraseniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldContraseniaActionPerformed

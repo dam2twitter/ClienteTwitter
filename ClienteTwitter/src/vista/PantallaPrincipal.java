@@ -58,6 +58,7 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         cargarContenidoInicial();
+       // ponerAyuda();
     }
 
     private void cargarContenidoInicial() {
@@ -69,6 +70,31 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         refrescarTrendingTopics();
         refrescarLista();
     }
+    
+    
+//        private void ponerAyuda() {
+//        try {
+//            File ficheroAyuda = new File("help" + File.separator + "help_set.hs");
+//            URL hsURL = ficheroAyuda.toURI().toURL();
+//
+//            //Crea el HelpSet y el HelpBroker
+//            HelpSet helpset = new HelpSet(getClass().getClassLoader(), hsURL);
+//            HelpBroker hb = helpset.createHelpBroker();
+//
+//            hb.enableHelpOnButton(jButtonAyuda, "pantallaTwitter", helpset);
+//            //Al pulsar F1 salta la ayuda
+//            hb.enableHelpKey(getRootPane(), "pantallaTwitter", helpset);
+//
+//        } catch (MalformedURLException ex) {
+//            Exceptions.printStackTrace(ex);
+//        } catch (HelpSetException ex) {
+//            Exceptions.printStackTrace(ex);
+//        }
+//
+//    }
+    
+    
+    
 
     private void metodoTemporal() {
         jLayeredPaneBanner.setLayer(jLabelAvatar, 0);
@@ -221,6 +247,7 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         jTextFieldBusqueda = new javax.swing.JTextField();
         jComboBoxBusqueda = new javax.swing.JComboBox<>();
         jRadioButtonFavoritos = new javax.swing.JRadioButton();
+        jButtonAyuda = new javax.swing.JButton();
         jLayeredPaneBanner = new javax.swing.JLayeredPane();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jLabelAvatar = new javax.swing.JLabel();
@@ -331,6 +358,8 @@ public class PantallaPrincipal extends javax.swing.JDialog {
             }
         });
 
+        jButtonAyuda.setText("Ayuda");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -354,7 +383,13 @@ public class PantallaPrincipal extends javax.swing.JDialog {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
                         .addGap(14, 14, 14)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                                .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -366,19 +401,19 @@ public class PantallaPrincipal extends javax.swing.JDialog {
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jButtonFavorito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                            .addGap(0, 0, Short.MAX_VALUE)
-                                            .addComponent(jButtonRetweet))
-                                        .addComponent(jButtonBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(jRadioButtonFavoritos)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(jButtonFavorito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                    .addGap(0, 0, Short.MAX_VALUE)
+                                                    .addComponent(jButtonRetweet))
+                                                .addComponent(jButtonBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(jRadioButtonFavoritos))
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jButtonAyuda)))))))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -410,7 +445,7 @@ public class PantallaPrincipal extends javax.swing.JDialog {
                     .addComponent(jRadioButtonUserTimeline)
                     .addComponent(jRadioButtonFavoritos))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -418,7 +453,9 @@ public class PantallaPrincipal extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(jButtonRetweet)
                         .addGap(18, 18, 18)
-                        .addComponent(jButtonBorrar)))
+                        .addComponent(jButtonBorrar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonAyuda)))
                 .addContainerGap())
         );
 
@@ -682,6 +719,7 @@ public class PantallaPrincipal extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupTipoLista;
     private javax.swing.JButton jButtonAdjuntar;
+    private javax.swing.JButton jButtonAyuda;
     private javax.swing.JButton jButtonBorrar;
     private javax.swing.JButton jButtonBusqueda;
     private javax.swing.JButton jButtonFavorito;

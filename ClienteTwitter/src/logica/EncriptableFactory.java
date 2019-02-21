@@ -22,4 +22,10 @@ public class EncriptableFactory {
     
     }
     
+     public static Encriptable getEncriptableSha(){
+    return new EncriptableSha256();
+    
+    }
+    
+    
 }

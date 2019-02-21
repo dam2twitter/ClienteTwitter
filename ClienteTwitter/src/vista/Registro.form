@@ -31,17 +31,15 @@
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jPasswordField" pref="300" max="32767" attributes="0"/>
                   <Component id="fotoRedonda1" min="-2" pref="57" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jLabelPin1" min="-2" pref="219" max="-2" attributes="0"/>
-                      <Component id="jLabelPin" min="-2" pref="219" max="-2" attributes="0"/>
-                      <Component id="jTextFieldCorreo" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jLabelPin2" alignment="0" min="-2" pref="219" max="-2" attributes="0"/>
-                      <Component id="jTextFieldPin" alignment="0" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jButtonRecargar" min="-2" pref="157" max="-2" attributes="0"/>
-                          <EmptySpace pref="39" max="32767" attributes="0"/>
-                          <Component id="jButtonAceptar" min="-2" pref="104" max="-2" attributes="0"/>
-                      </Group>
+                  <Component id="jLabelPin1" min="-2" pref="219" max="-2" attributes="0"/>
+                  <Component id="jLabelPin" min="-2" pref="219" max="-2" attributes="0"/>
+                  <Component id="jTextFieldCorreo" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jLabelPin2" alignment="0" min="-2" pref="219" max="-2" attributes="0"/>
+                  <Component id="jTextFieldPin" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jButtonRecargar" min="-2" pref="157" max="-2" attributes="0"/>
+                      <EmptySpace pref="39" max="32767" attributes="0"/>
+                      <Component id="jButtonAceptar" min="-2" pref="104" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="38" max="32767" attributes="0"/>

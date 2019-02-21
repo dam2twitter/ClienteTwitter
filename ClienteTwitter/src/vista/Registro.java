@@ -14,6 +14,7 @@ import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import logica.EncriptableFactory;
 import logica.LogicaNegocio;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -84,7 +85,7 @@ public class Registro extends javax.swing.JDialog {
         try {
           
             pin = jTextFieldPin.getText();
-
+          
             accessTokenCliente = twitterAdministrador.getOAuthAccessToken(requestToken, pin);
             usuario = TwitterFactory.getSingleton();
             usuario.setOAuthAccessToken(accessTokenCliente);

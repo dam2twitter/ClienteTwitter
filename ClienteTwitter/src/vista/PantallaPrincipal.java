@@ -13,16 +13,20 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import logica.LogicaNegocio;
-import twitter4j.Location;
+
+import twitter4j.PagableResponseList;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.ResponseList;
@@ -35,6 +39,8 @@ import twitter4j.TwitterException;
 import twitter4j.User;
 import vista.listas.ListaTweets;
 import vista.listas.ListaTweetsAdaptador;
+import vista.listas.ListaUsuarios;
+import vista.listas.ListaUsuariosAdaptador;
 
 /**
  *
@@ -44,10 +50,20 @@ public class PantallaPrincipal extends javax.swing.JDialog {
 
     private Twitter usuarioActual = LogicaNegocio.getInstance().getAdmin();
     private File tweetConMedia;
+    ResponseList<Status> listaTweetsUsuario;
+    ResponseList<Status> listaTweetsHome;
+    ResponseList<Status> listaTweetsFavoritos;
+    List<Status> listaTweetsTendencia;
+    ResponseList<Status> listaTweetsBusqueda;
+    ResponseList<Status> listaTweetsSeguidor;
+    ResponseList<Status> listaTweetsSiguiendo;
     private Trend[] listaTrendingTopics = new Trend[10];
+    private PagableResponseList<User> listaSeguidores;
+    private PagableResponseList<User> listaSiguiendo;
+    private boolean seleccionadoTweet = true;
 
     public static enum TipoLista {
-        USER, HOME, TRENDING, FAVORITE
+        USER, HOME, TRENDING, FAVORITE, SEARCH, FOLLOWERS, FRIENDS
     }
     TipoLista listaActiva;
 
@@ -58,7 +74,6 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         cargarContenidoInicial();
-       // ponerAyuda();
     }
 
     private void cargarContenidoInicial() {
@@ -70,31 +85,6 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         refrescarTrendingTopics();
         refrescarLista();
     }
-    
-    
-//        private void ponerAyuda() {
-//        try {
-//            File ficheroAyuda = new File("help" + File.separator + "help_set.hs");
-//            URL hsURL = ficheroAyuda.toURI().toURL();
-//
-//            //Crea el HelpSet y el HelpBroker
-//            HelpSet helpset = new HelpSet(getClass().getClassLoader(), hsURL);
-//            HelpBroker hb = helpset.createHelpBroker();
-//
-//            hb.enableHelpOnButton(jButtonAyuda, "pantallaTwitter", helpset);
-//            //Al pulsar F1 salta la ayuda
-//            hb.enableHelpKey(getRootPane(), "pantallaTwitter", helpset);
-//
-//        } catch (MalformedURLException ex) {
-//            Exceptions.printStackTrace(ex);
-//        } catch (HelpSetException ex) {
-//            Exceptions.printStackTrace(ex);
-//        }
-//
-//    }
-    
-    
-    
 
     private void metodoTemporal() {
         jLayeredPaneBanner.setLayer(jLabelAvatar, 0);
@@ -133,13 +123,22 @@ public class PantallaPrincipal extends javax.swing.JDialog {
                 jLabelCarateres.setText(String.valueOf(240 - jTextAreaTwitter.getText().length()));
             }
         });
-        jListTrendingTopics.addMouseListener(new MouseAdapter() {
+        jListSeleccion.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
                 if (me.getClickCount() == 2 && !me.isConsumed()) {
-                    buscarTrendingTopic();
+                    refrescarSeleccion();
                 }
             }
+        });
+        jListTweets.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                if (me.getClickCount() == 2 && !me.isConsumed()) {
+                    extraerScreenNames();
+                }
+            }
+
         });
     }
 
@@ -165,16 +164,23 @@ public class PantallaPrincipal extends javax.swing.JDialog {
             ResponseList<Status> timelineList = null;
             switch (listaActiva) {
                 case USER:
-                    timelineList = usuarioActual.timelines().getUserTimeline();
+                    timelineList = listaTweetsUsuario = usuarioActual.timelines().getUserTimeline();
                     break;
                 case HOME:
-                    timelineList = usuarioActual.timelines().getHomeTimeline();
+                    timelineList = listaTweetsUsuario = usuarioActual.timelines().getHomeTimeline();
+                    break;
+                case FAVORITE:
+                    timelineList = listaTweetsFavoritos = usuarioActual.favorites().getFavorites();
+                    break;
+                case TRENDING:
+                case FOLLOWERS:
+                case FRIENDS:
+                    jListTweets.setSelectedIndex(-1);
                     break;
             }
             ListaTweets listaActual = new ListaTweets(timelineList);
             jListTweets.setModel(listaActual);
             jListTweets.setCellRenderer(new ListaTweetsAdaptador());
-
         } catch (TwitterException ex) {
             Logger.getLogger(PantallaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -184,19 +190,80 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         try {
             jRadioButtonTendencias.setSelected(true);
             listaActiva = TipoLista.TRENDING;
-            int selectedIndex = jListTrendingTopics.getSelectedIndex();
+            int selectedIndex = jListSeleccion.getSelectedIndex();
             String queryBusqueda = listaTrendingTopics[selectedIndex].getQuery();
             QueryResult searchResult = usuarioActual.search(new Query(queryBusqueda));
-            List<Status> tweetsAsociados = searchResult.getTweets();
-            if (tweetsAsociados.isEmpty()) {
+            listaTweetsTendencia = searchResult.getTweets();
+            if (listaTweetsTendencia.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "No hay tweets asociados para esta búsqueda");
             } else {
-                ListaTweets listaActual = new ListaTweets(tweetsAsociados);
+                ListaTweets listaActual = new ListaTweets(listaTweetsTendencia);
                 jListTweets.setModel(listaActual);
                 jListTweets.setCellRenderer(new ListaTweetsAdaptador());
             }
         } catch (TwitterException ex) {
             ex.printStackTrace();
+        } finally {
+            jListTweets.setSelectedIndex(-1);
+        }
+    }
+
+    private void buscarSeguidor() {
+        if (listaSeguidores != null && !listaSeguidores.isEmpty()) {
+            try {
+                int selectedIndex = jListSeleccion.getSelectedIndex();
+                long id = listaSeguidores.get(selectedIndex).getId();
+                listaTweetsSeguidor = usuarioActual.timelines().getUserTimeline(id);
+                ListaTweets listaActual = new ListaTweets(listaTweetsSeguidor);
+                jListTweets.setModel(listaActual);
+                jListTweets.setCellRenderer(new ListaTweetsAdaptador());
+            } catch (TwitterException ex) {
+                ex.printStackTrace();
+            } finally {
+                jListTweets.setSelectedIndex(-1);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay seguidores para esta cuenta");
+        }
+    }
+
+    private void buscarSiguiendo() {
+        if (listaSiguiendo != null && !listaSiguiendo.isEmpty()) {
+            try {
+                int selectedIndex = jListSeleccion.getSelectedIndex();
+                long id = listaSiguiendo.get(selectedIndex).getId();
+                listaTweetsSiguiendo = usuarioActual.timelines().getUserTimeline(id);
+                ListaTweets listaActual = new ListaTweets(listaTweetsSiguiendo);
+                jListTweets.setModel(listaActual);
+                jListTweets.setCellRenderer(new ListaTweetsAdaptador());
+            } catch (TwitterException ex) {
+                ex.printStackTrace();
+            } finally {
+                jListTweets.setSelectedIndex(-1);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No estás siguiendo a nadie");
+        }
+    }
+
+    private void refrescarSeleccion() {
+        int indiceSeleccionado = jComboBoxSeleccion.getSelectedIndex();
+        if (indiceSeleccionado != -1) {
+            jListTweets.setSelectedIndex(-1);
+            switch (indiceSeleccionado) {
+                case 0:
+                    listaActiva = TipoLista.TRENDING;
+                    buscarTrendingTopic();
+                    break;
+                case 1:
+                    listaActiva = TipoLista.FOLLOWERS;
+                    buscarSeguidor();
+                    break;
+                case 2:
+                    listaActiva = TipoLista.FRIENDS;
+                    buscarSiguiendo();
+                    break;
+            }
         }
     }
 
@@ -209,9 +276,67 @@ public class PantallaPrincipal extends javax.swing.JDialog {
                 defaultListModel.addElement(trends[i].getName());
                 listaTrendingTopics[i] = trends[i];
             }
-            jListTrendingTopics.setModel(defaultListModel);
+            jListSeleccion.setModel(defaultListModel);
+            jListTweets.setSelectedIndex(-1);
         } catch (TwitterException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    private void refrescarListaSeguidores() {
+        try {
+            listaSeguidores = usuarioActual.getFollowersList(usuarioActual.getId(), -1);
+            DefaultListModel<String> defaultListModel = new DefaultListModel<String>();
+            if (listaSeguidores != null && listaSeguidores.size() > 0) {
+                for (User seguidor : listaSeguidores) {
+                    defaultListModel.addElement("@" + seguidor.getScreenName());
+                }
+                ListaUsuarios listaUsuarios = new ListaUsuarios(listaSeguidores);
+                jListTweets.setModel(listaUsuarios);
+                jListTweets.setCellRenderer(new ListaUsuariosAdaptador());
+            } else {
+                JOptionPane.showMessageDialog(this, "Actualmente tu cuenta no dispone de ningún seguidor");
+            }
+            jListSeleccion.setModel(defaultListModel);
+            jListTweets.setSelectedIndex(-1);
+        } catch (TwitterException ex) {
+            ex.printStackTrace();
+        } catch (IllegalStateException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void refrescarListaSiguiendo() {
+        try {
+            listaSiguiendo = usuarioActual.getFriendsList(usuarioActual.getId(), -1);
+            DefaultListModel<String> defaultListModel = new DefaultListModel<String>();
+            if (listaSiguiendo != null && listaSiguiendo.size() > 0) {
+                for (User seguidor : listaSiguiendo) {
+                    defaultListModel.addElement("@" + seguidor.getScreenName());
+                }
+                ListaUsuarios listaUsuarios = new ListaUsuarios(listaSiguiendo);
+                jListTweets.setModel(listaUsuarios);
+                jListTweets.setCellRenderer(new ListaUsuariosAdaptador());
+            } else {
+                JOptionPane.showMessageDialog(this, "Actualmente tu cuenta no sigue a nadie");
+            }
+            jListSeleccion.setModel(defaultListModel);
+            jListTweets.setSelectedIndex(-1);
+        } catch (TwitterException ex) {
+            ex.printStackTrace();
+        } catch (IllegalStateException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void reiniciarBotones() {
+        List<JButton> botones = Arrays.asList(jButtonRetweet, jButtonFavorito, jButtonBorrar, jButtonSeguir);
+        for (JButton boton : botones) {
+            boton.setEnabled(false);
+        }
+        String[] textos = new String[]{"RETWEETEAR", "FAVORITO", "BORRAR", "FOLLOW"};
+        for (int i = 0; i < botones.size(); i++) {
+            botones.get(i).setText(textos[i]);
         }
     }
 
@@ -226,11 +351,9 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         buttonGroupTipoLista = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jListTrendingTopics = new javax.swing.JList<>();
-        jLabel1 = new javax.swing.JLabel();
+        jListSeleccion = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListTweets = new javax.swing.JList<>();
-        jLabel2 = new javax.swing.JLabel();
         jButtonPublicar = new javax.swing.JButton();
         jButtonBorrar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -247,7 +370,9 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         jTextFieldBusqueda = new javax.swing.JTextField();
         jComboBoxBusqueda = new javax.swing.JComboBox<>();
         jRadioButtonFavoritos = new javax.swing.JRadioButton();
-        jButtonAyuda = new javax.swing.JButton();
+        jComboBoxSeleccion = new javax.swing.JComboBox<>();
+        jButtonSeguir = new javax.swing.JButton();
+        jRadioButtonBusqueda = new javax.swing.JRadioButton();
         jLayeredPaneBanner = new javax.swing.JLayeredPane();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jLabelAvatar = new javax.swing.JLabel();
@@ -255,21 +380,18 @@ public class PantallaPrincipal extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jListTrendingTopics.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jListTrendingTopics.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(jListTrendingTopics);
-
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("#TOP10 TENDENCIAS");
-        jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jListSeleccion.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jListSeleccion.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(jListSeleccion);
 
         jListTweets.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jListTweets.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jListTweets.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListTweetsValueChanged(evt);
+            }
+        });
         jScrollPane2.setViewportView(jListTweets);
-
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("ÚLTIMOS TWEETS");
-        jLabel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jButtonPublicar.setText("PUBLICAR");
         jButtonPublicar.addActionListener(new java.awt.event.ActionListener() {
@@ -279,6 +401,7 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         });
 
         jButtonBorrar.setText("BORRAR");
+        jButtonBorrar.setEnabled(false);
         jButtonBorrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBorrarActionPerformed(evt);
@@ -304,7 +427,7 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         jLabelAdjunto.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         buttonGroupTipoLista.add(jRadioButtonUserTimeline);
-        jRadioButtonUserTimeline.setText("Mis Tweets");
+        jRadioButtonUserTimeline.setText("  Mis Tweets");
         jRadioButtonUserTimeline.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButtonUserTimelineActionPerformed(evt);
@@ -312,7 +435,7 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         });
 
         buttonGroupTipoLista.add(jRadioButtonHomeTimeline);
-        jRadioButtonHomeTimeline.setText("Siguiendo");
+        jRadioButtonHomeTimeline.setText(" Siguiendo");
         jRadioButtonHomeTimeline.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButtonHomeTimelineActionPerformed(evt);
@@ -320,7 +443,7 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         });
 
         buttonGroupTipoLista.add(jRadioButtonTendencias);
-        jRadioButtonTendencias.setText("Tendencias");
+        jRadioButtonTendencias.setText(" Tendencias");
         jRadioButtonTendencias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButtonTendenciasActionPerformed(evt);
@@ -328,6 +451,7 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         });
 
         jButtonBusqueda.setText("BÚSQUEDA");
+        jButtonBusqueda.setEnabled(false);
         jButtonBusqueda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBusquedaActionPerformed(evt);
@@ -335,6 +459,7 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         });
 
         jButtonRetweet.setText("RETWITTEAR");
+        jButtonRetweet.setEnabled(false);
         jButtonRetweet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonRetweetActionPerformed(evt);
@@ -342,6 +467,7 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         });
 
         jButtonFavorito.setText("FAVORITO");
+        jButtonFavorito.setEnabled(false);
         jButtonFavorito.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonFavoritoActionPerformed(evt);
@@ -351,14 +477,35 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         jComboBoxBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         buttonGroupTipoLista.add(jRadioButtonFavoritos);
-        jRadioButtonFavoritos.setText("Favoritos");
+        jRadioButtonFavoritos.setText(" Favoritos");
         jRadioButtonFavoritos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButtonFavoritosActionPerformed(evt);
             }
         });
 
-        jButtonAyuda.setText("Ayuda");
+        jComboBoxSeleccion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TENDENCIAS", "SEGUIDORES", "SIGUIENDO" }));
+        jComboBoxSeleccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxSeleccionActionPerformed(evt);
+            }
+        });
+
+        jButtonSeguir.setText("FOLLOW");
+        jButtonSeguir.setEnabled(false);
+        jButtonSeguir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSeguirActionPerformed(evt);
+            }
+        });
+
+        buttonGroupTipoLista.add(jRadioButtonBusqueda);
+        jRadioButtonBusqueda.setText(" Búsqueda");
+        jRadioButtonBusqueda.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jRadioButtonBusquedaItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -368,84 +515,81 @@ public class PantallaPrincipal extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelAdjunto, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jButtonPublicar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelCarateres, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonAdjuntar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                            .addComponent(jComboBoxSeleccion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(14, 14, 14)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                                .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jRadioButtonUserTimeline)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jRadioButtonHomeTimeline)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jRadioButtonTendencias))
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(jButtonFavorito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                    .addGap(0, 0, Short.MAX_VALUE)
-                                                    .addComponent(jButtonRetweet))
-                                                .addComponent(jButtonBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                            .addComponent(jRadioButtonFavoritos))
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(jButtonAyuda)))))))
-                .addContainerGap(16, Short.MAX_VALUE))
+                                .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButtonBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonFavorito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButtonRetweet))
+                            .addComponent(jButtonBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonSeguir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jButtonPublicar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                                    .addComponent(jLabelCarateres, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabelAdjunto, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButtonAdjuntar)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jRadioButtonBusqueda)
+                            .addComponent(jRadioButtonHomeTimeline)
+                            .addComponent(jRadioButtonUserTimeline)
+                            .addComponent(jRadioButtonTendencias)
+                            .addComponent(jRadioButtonFavoritos))
+                        .addGap(35, 35, 35))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelCarateres, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonPublicar, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonAdjuntar)
-                    .addComponent(jLabelAdjunto, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jRadioButtonUserTimeline)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButtonHomeTimeline)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButtonTendencias)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButtonFavoritos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButtonBusqueda))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabelCarateres, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(8, 8, 8)
+                                .addComponent(jButtonPublicar, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabelAdjunto, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonAdjuntar))))
+                .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonBusqueda)
-                    .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jRadioButtonHomeTimeline)
-                    .addComponent(jRadioButtonTendencias)
-                    .addComponent(jRadioButtonUserTimeline)
-                    .addComponent(jRadioButtonFavoritos))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -454,9 +598,9 @@ public class PantallaPrincipal extends javax.swing.JDialog {
                         .addComponent(jButtonRetweet)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonBorrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonAyuda)))
-                .addContainerGap())
+                        .addGap(106, 106, 106)
+                        .addComponent(jButtonSeguir)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLayeredPaneBanner.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -496,9 +640,8 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         jLayeredPaneBannerLayout.setHorizontalGroup(
             jLayeredPaneBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jLayeredPaneBannerLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jLayeredPaneBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jLayeredPaneBannerLayout.createSequentialGroup()
                     .addContainerGap()
@@ -523,10 +666,13 @@ public class PantallaPrincipal extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLayeredPaneBanner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLayeredPaneBanner, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -535,8 +681,8 @@ public class PantallaPrincipal extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLayeredPaneBanner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -554,21 +700,23 @@ public class PantallaPrincipal extends javax.swing.JDialog {
 
     private void jButtonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarActionPerformed
         int selectedIndex = jListTweets.getSelectedIndex();
-        if (listaActiva != TipoLista.USER) {
-            JOptionPane.showMessageDialog(this, "No puedes borrar un Tweet de otro usuario");
-        } else {
-            if (selectedIndex > -1) {
-                try {
-                    Status tweet = (Status) jListTweets.getModel().getElementAt(selectedIndex);
+        if (selectedIndex > -1) {
+            try {
+                Status tweet = (Status) jListTweets.getModel().getElementAt(selectedIndex);
+                if (listaTweetsUsuario.contains(tweet)) {
                     usuarioActual.tweets().destroyStatus(tweet.getId());
                     JOptionPane.showMessageDialog(this, "Tweet borrado");
                     refrescarLista();
-                } catch (TwitterException ex) {
-                    ex.printStackTrace();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Debes seleccionar un Tweet de la lista");
                 }
-            } else {
-                JOptionPane.showMessageDialog(this, "Debes seleccionar un Tweet de la lista");
+            } catch (TwitterException ex) {
+                ex.printStackTrace();
+            } finally {
+                jListTweets.setSelectedIndex(-1);
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un Tweet de la lista");
         }
     }//GEN-LAST:event_jButtonBorrarActionPerformed
 
@@ -594,23 +742,28 @@ public class PantallaPrincipal extends javax.swing.JDialog {
             } catch (TwitterException ex) {
                 System.out.println("Error 1");
                 ex.printStackTrace();
+            } finally {
+                jListTweets.setSelectedIndex(-1);
             }
         }
     }//GEN-LAST:event_jButtonPublicarActionPerformed
 
 
     private void jRadioButtonUserTimelineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonUserTimelineActionPerformed
+        jListTweets.setSelectedIndex(-1);
         listaActiva = TipoLista.USER;
         refrescarLista();
     }//GEN-LAST:event_jRadioButtonUserTimelineActionPerformed
 
     private void jRadioButtonHomeTimelineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonHomeTimelineActionPerformed
+        jListTweets.setSelectedIndex(-1);
         listaActiva = TipoLista.HOME;
         refrescarLista();
     }//GEN-LAST:event_jRadioButtonHomeTimelineActionPerformed
 
     private void jRadioButtonTendenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonTendenciasActionPerformed
-        int selectedIndex = jListTrendingTopics.getSelectedIndex();
+        jListTweets.setSelectedIndex(-1);
+        int selectedIndex = jListSeleccion.getSelectedIndex();
         if (selectedIndex != -1) {
             listaActiva = TipoLista.TRENDING;
             buscarTrendingTopic();
@@ -631,9 +784,11 @@ public class PantallaPrincipal extends javax.swing.JDialog {
                     usuarioActual.tweets().retweetStatus(tweet.getId());
                     JOptionPane.showMessageDialog(this, "El Tweet ha sido retweeteado");
                 }
-                refrescarLista();
+                listaTweetsUsuario = usuarioActual.timelines().getUserTimeline();
             } catch (TwitterException ex) {
                 ex.printStackTrace();
+            } finally {
+                jListTweets.setSelectedIndex(-1);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Debes seleccionar un Tweet de la lista");
@@ -643,11 +798,11 @@ public class PantallaPrincipal extends javax.swing.JDialog {
     private void jButtonFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFavoritoActionPerformed
         int selectedIndex = jListTweets.getSelectedIndex();
         if (selectedIndex > -1) {
-            try {    
+            try {
                 Status tweet = (Status) jListTweets.getModel().getElementAt(selectedIndex);
                 boolean favorito = false;
-                ResponseList<Status> favorites = usuarioActual.favorites().getFavorites();
-                for (Status favorite : favorites) {
+                listaTweetsFavoritos = usuarioActual.favorites().getFavorites();
+                for (Status favorite : listaTweetsFavoritos) {
                     if (favorite.getId() == tweet.getId()) {
                         favorito = true;
                         break;
@@ -660,9 +815,11 @@ public class PantallaPrincipal extends javax.swing.JDialog {
                     usuarioActual.favorites().createFavorite(tweet.getId());
                     JOptionPane.showMessageDialog(this, "El Tweet ha sido marcado como favorito");
                 }
-                refrescarLista();
+                listaTweetsFavoritos = usuarioActual.favorites().getFavorites();
             } catch (TwitterException ex) {
                 ex.printStackTrace();
+            } finally {
+                jListTweets.setSelectedIndex(-1);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Debes seleccionar un Tweet de la lista");
@@ -691,7 +848,9 @@ public class PantallaPrincipal extends javax.swing.JDialog {
                     jListTweets.setCellRenderer(new ListaTweetsAdaptador());
                 }
             } catch (TwitterException ex) {
-                JOptionPane.showMessageDialog(this, "No hay resultados que mostrar para el usuario @" + jTextFieldBusqueda.getText());
+                JOptionPane.showMessageDialog(this, "No hay resultados para la búsqueda " + jTextFieldBusqueda.getText());
+            } finally {
+                jListTweets.setSelectedIndex(-1);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Escribe algo en el campo de búsqueda");
@@ -699,44 +858,229 @@ public class PantallaPrincipal extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonBusquedaActionPerformed
 
     private void jRadioButtonFavoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonFavoritosActionPerformed
-        try {
-            ResponseList<Status> favorites = usuarioActual.favorites().getFavorites();
-            listaActiva = TipoLista.FAVORITE;
-            if (!favorites.isEmpty()) {
-                
-                ListaTweets listaActual = new ListaTweets(favorites);
-                jListTweets.setModel(listaActual);
-                jListTweets.setCellRenderer(new ListaTweetsAdaptador());
-            } else {
-            JOptionPane.showMessageDialog(this, "Actualmente no tienes ningún tweet marcado como favorito");
-            }
-        } catch (TwitterException ex) {
-            ex.printStackTrace();
-        }
+        jListTweets.setSelectedIndex(-1);
+        listaActiva = TipoLista.FAVORITE;
+        refrescarLista();
     }//GEN-LAST:event_jRadioButtonFavoritosActionPerformed
 
+    private void jComboBoxSeleccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSeleccionActionPerformed
+        int indiceSeleccionado = jComboBoxSeleccion.getSelectedIndex();
+        jListTweets.setSelectedIndex(-1);
+        if (indiceSeleccionado != -1) {
+            switch (indiceSeleccionado) {
+                case 0:
+                    listaActiva = TipoLista.TRENDING;
+                    jRadioButtonTendencias.setSelected(true);
+                    refrescarTrendingTopics();
+                    break;
+                case 1:
+                    listaActiva = TipoLista.FOLLOWERS;
+                    refrescarListaSeguidores();
+                    break;
+                case 2:
+                    listaActiva = TipoLista.FRIENDS;
+                    refrescarListaSiguiendo();
+                    break;
+            }
+        }
+    }//GEN-LAST:event_jComboBoxSeleccionActionPerformed
+
+    private void jListTweetsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListTweetsValueChanged
+        try {
+            seleccionadoTweet = !seleccionadoTweet;
+            if (seleccionadoTweet) {
+                reiniciarBotones();
+                int indiceSeleccionado = -1;
+                if (jListTweets.getModel() instanceof ListaUsuarios) {
+                    System.out.println("Es de tipo usuario");
+                    indiceSeleccionado = jComboBoxSeleccion.getSelectedIndex();
+                    jButtonSeguir.setEnabled(true);
+                    User usuarioSeleccionado = null;
+                    switch (indiceSeleccionado) {
+                        case 1:
+                            //el usuario procede de la lista de seguidores
+                            usuarioSeleccionado = listaSeguidores.get(jListTweets.getSelectedIndex());
+                            break;
+                        case 2:
+                            //...de la lista de siguiendo
+                            usuarioSeleccionado = listaSiguiendo.get(jListTweets.getSelectedIndex());
+                            break;
+                        default: //usuarioSeleccionado = listaBusqueda.get(jListTweets.getSelectedIndex());
+                            break;
+                    }
+                    if (listaSiguiendo == null) {
+                        listaSiguiendo = usuarioActual.getFriendsList(usuarioActual.getId(), -1);
+                    }
+                    if (listaSiguiendo != null && !listaSiguiendo.isEmpty() && listaSiguiendo.contains(usuarioSeleccionado)) {
+                        jButtonSeguir.setText("UNFOLLOW");
+                    }
+                } else {
+                    System.out.println("Es de tipo tweet");
+                    indiceSeleccionado = jListTweets.getSelectedIndex();
+                    jButtonRetweet.setEnabled(true);
+                    jButtonFavorito.setEnabled(true);
+                    jButtonBorrar.setEnabled(true);
+                    Status TweetSeleccionado = null;
+                    switch (listaActiva) {
+                        case USER:
+                            TweetSeleccionado = listaTweetsUsuario.get(indiceSeleccionado);
+                            break;
+                        case HOME:
+                            if (listaTweetsHome == null) {
+                                listaTweetsHome = usuarioActual.timelines().getHomeTimeline();
+                            }
+                            if (listaTweetsHome != null && listaTweetsHome.size() > 1) {
+                                TweetSeleccionado = listaTweetsHome.get(indiceSeleccionado);
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Actualmente no existen tweets en tu cronología compartida");
+                                return;
+                            }
+                            break;
+                        case FAVORITE:
+                            if (listaTweetsFavoritos == null) {
+                                listaTweetsFavoritos = usuarioActual.favorites().getFavorites();
+                            }
+                            if (listaTweetsFavoritos != null && listaTweetsFavoritos.size() > 1) {
+                                TweetSeleccionado = listaTweetsFavoritos.get(indiceSeleccionado);
+                            } else {
+                                JOptionPane.showMessageDialog(this, "No tienes marcado ningún tweet como favorito");
+                                return;
+                            }
+                            break;
+                        case TRENDING:
+                            TweetSeleccionado = listaTweetsTendencia.get(indiceSeleccionado);
+                            break;
+                        case FOLLOWERS:
+                            TweetSeleccionado = listaTweetsSeguidor.get(indiceSeleccionado);
+                            break;
+                        case FRIENDS:
+                            TweetSeleccionado = listaTweetsSiguiendo.get(indiceSeleccionado);
+                            break;
+                        case SEARCH:
+                            TweetSeleccionado = listaTweetsBusqueda.get(indiceSeleccionado);
+                            break;
+                    }
+                    if (listaTweetsFavoritos == null) {
+                        listaTweetsFavoritos = usuarioActual.favorites().getFavorites();
+                    }
+                    if (listaTweetsFavoritos != null && !listaTweetsFavoritos.isEmpty() && listaTweetsFavoritos.contains(TweetSeleccionado)) {
+                        jButtonFavorito.setText("NO FAVORITO");
+                    }
+                    if (TweetSeleccionado.isRetweetedByMe()) {
+                        jButtonRetweet.setText("UNRETWEET");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jListTweetsValueChanged
+
+    private void jButtonSeguirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSeguirActionPerformed
+        int selectedIndex = jListTweets.getSelectedIndex();
+        if (selectedIndex > -1) {
+            try {
+                User user = null;
+                if (listaActiva == TipoLista.FOLLOWERS) {
+                    user = listaSeguidores.get(selectedIndex);
+                } else if (listaActiva == TipoLista.FRIENDS) {
+                    user = listaSiguiendo.get(selectedIndex);
+                } else {
+                    // user = listaBusqueda.get(selectedIndex);
+                }
+                if (listaSiguiendo.contains(user)) {
+                    usuarioActual.friendsFollowers().destroyFriendship(user.getId());
+                    JOptionPane.showMessageDialog(this, "Has dejado de seguir a " + usuarioActual.getScreenName());
+                } else {
+                    usuarioActual.friendsFollowers().createFriendship(user.getId(), true);
+                    JOptionPane.showMessageDialog(this, "Has comenzado a seguir a " + usuarioActual.getScreenName());
+                }
+            } catch (TwitterException ex) {
+                ex.printStackTrace();
+            } finally {
+                jListTweets.setSelectedIndex(-1);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un Tweet de la lista");
+        }
+    }//GEN-LAST:event_jButtonSeguirActionPerformed
+
+    private void jRadioButtonBusquedaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButtonBusquedaItemStateChanged
+        jListTweets.setSelectedIndex(-1);
+        if (jRadioButtonBusqueda.isSelected()) {
+            jButtonBusqueda.setEnabled(true);
+        } else {
+            jButtonBusqueda.setEnabled(false);
+        }
+    }//GEN-LAST:event_jRadioButtonBusquedaItemStateChanged
+
+    private void extraerScreenNames() {
+        if (jListTweets.getModel() instanceof ListaTweets) {
+            int selectedIndex = jListTweets.getSelectedIndex();
+            if (selectedIndex > -1) {
+                Status tweet = null;
+                switch(listaActiva) {
+                    case FOLLOWERS : tweet = listaTweetsSeguidor.get(selectedIndex);
+                    break;
+                    case FRIENDS : tweet = listaTweetsSiguiendo.get(selectedIndex);
+                    break;
+                    case HOME : tweet = listaTweetsHome.get(selectedIndex);
+                    break;
+                    case FAVORITE : tweet = listaTweetsUsuario.get(selectedIndex);
+                    break;
+                    case TRENDING : tweet = listaTweetsTendencia.get(selectedIndex);
+                    break;
+                    case USER : tweet = listaTweetsUsuario.get(selectedIndex);
+                    break;
+                    default: return;
+                }
+                String texto = tweet.getText();
+                if (texto.contains("@")) {
+                    String screenNames = "";
+                    String[] tokens = texto.replaceAll("[¿?¡!,\\.:]","").split(" ");
+                    for (String token : tokens) {
+                        if (token.contains("@")) {
+                            screenNames += (token.replaceAll("@","") + ",");
+                        }
+                    };
+                    if (!screenNames.isEmpty()) {
+                        try {
+                            ResponseList<User> usuarios = usuarioActual.users().lookupUsers(screenNames.substring(0, screenNames.length() - 1));
+                            if (!usuarios.isEmpty()) {
+                                ListaUsuarios listaUsuarios = new ListaUsuarios(usuarios);
+                                jListTweets.setModel(listaUsuarios);
+                                jListTweets.setCellRenderer(new ListaUsuariosAdaptador());
+                            }
+                        } catch (TwitterException ex) {
+                            Logger.getLogger(PantallaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupTipoLista;
     private javax.swing.JButton jButtonAdjuntar;
-    private javax.swing.JButton jButtonAyuda;
     private javax.swing.JButton jButtonBorrar;
     private javax.swing.JButton jButtonBusqueda;
     private javax.swing.JButton jButtonFavorito;
     private javax.swing.JButton jButtonPublicar;
     private javax.swing.JButton jButtonRetweet;
+    private javax.swing.JButton jButtonSeguir;
     private javax.swing.JComboBox<String> jComboBoxBusqueda;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JComboBox<String> jComboBoxSeleccion;
     private javax.swing.JLabel jLabelAdjunto;
     private javax.swing.JLabel jLabelAvatar;
     private javax.swing.JLabel jLabelBanner;
     private javax.swing.JLabel jLabelCarateres;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLayeredPane jLayeredPaneBanner;
-    private javax.swing.JList<String> jListTrendingTopics;
+    private javax.swing.JList<String> jListSeleccion;
     private javax.swing.JList<Status> jListTweets;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JRadioButton jRadioButtonBusqueda;
     private javax.swing.JRadioButton jRadioButtonFavoritos;
     private javax.swing.JRadioButton jRadioButtonHomeTimeline;
     private javax.swing.JRadioButton jRadioButtonTendencias;

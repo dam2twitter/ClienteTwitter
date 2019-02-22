@@ -1,10 +1,13 @@
 package Componentes;
 
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 
@@ -38,11 +41,17 @@ public class ComponenteTweet extends javax.swing.JPanel {
 
         jLabelAvatar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        jScrollPaneTweet.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPaneTweet.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        jScrollPaneTweet.setNextFocusableComponent(jTextAreaTweet);
+
         jTextAreaTweet.setColumns(20);
         jTextAreaTweet.setRows(5);
+        jTextAreaTweet.setAutoscrolls(false);
+        jTextAreaTweet.setPreferredSize(null);
         jScrollPaneTweet.setViewportView(jTextAreaTweet);
 
-        jLabelScreenName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabelScreenName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabelScreenName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabelScreenName.setText("@dam2twitter");
 
@@ -52,12 +61,12 @@ public class ComponenteTweet extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(4, 4, 4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPaneTweet, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabelAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelScreenName, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelScreenName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -67,9 +76,11 @@ public class ComponenteTweet extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelScreenName))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabelScreenName)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneTweet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPaneTweet)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 14, Short.MAX_VALUE)
                 .addContainerGap())
@@ -80,7 +91,17 @@ public class ComponenteTweet extends javax.swing.JPanel {
         jTextAreaTweet.setLineWrap(true);   //scroll horizontal desactivado
         jTextAreaTweet.setWrapStyleWord(true);  //evita la partición de palabras
         jLabelScreenName.setText("@" + this.tweet.getUser().getScreenName());
-        jTextAreaTweet.setText(this.tweet.getText());
+        String texto = tweet.getText();
+        int lineas = 0;
+        String[] numLineas = texto.split("\n");
+        lineas += numLineas.length;
+        for (String numLinea : numLineas) {
+            if (numLinea.length() > 30) {
+                lineas += numLinea.length() / 30;
+            }
+        }
+        jTextAreaTweet.setRows(lineas);
+        jTextAreaTweet.setText(tweet.getText());
     }
 
     private void cargarImagenes() {
